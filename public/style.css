@@ -1,0 +1,31 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+}
+
+#callList {
+  width: 25%;
+  border-right: 1px solid #ddd;
+}
+
+.call {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.call:hover {
+  background: #f0f0f0;
+}
+
+#details {
+  padding: 20px;
+  width: 75%;
+}
+
+#calendar {
+  margin-top: 10px;
+}
