@@ -27,6 +27,29 @@ const calendar = new FullCalendar.Calendar(
   {
     initialView: "timeGridWeek",
     selectable: true,
+
+    events: function(fetchInfo, successCallback, failureCallback) {
+      fetch("/api/booked-slots")
+        .then(res => res.json())
+        .then(data => {
+          const events = data.map(slot => ({
+            start: slot.start,
+            end: slot.start,
+            display: "background",
+            backgroundColor: "#ff4d4f" // blocked slot color
+          }));
+          successCallback(events);
+        })
+        .catch(failureCallback);
+    },
+
+    selectAllow: function(selectInfo) {
+      const events = calendar.getEvents();
+      return !events.some(event =>
+        event.startStr === selectInfo.startStr
+      );
+    },
+
     select: info => {
       selectedSlot = info;
       alert("Selected: " + info.startStr);
@@ -35,6 +58,7 @@ const calendar = new FullCalendar.Calendar(
 );
 
 calendar.render();
+
 
 function confirmBooking() {
   if (!selectedCall || !selectedSlot) {
