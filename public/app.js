@@ -46,11 +46,11 @@ function confirmBooking() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      name: selectedCall.name,
-      phone: selectedCall.phone,
+      callId: selectedCall.callId,
       datetime: selectedSlot.startStr
     })
   })
     .then(res => res.json())
-    .then(() => alert("WhatsApp sent successfully"));
+    .then(() => alert("Booking saved successfully"));
 }
+
