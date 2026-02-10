@@ -8,10 +8,19 @@
 
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
+<!-- 🔒 LOGIN CHECK -->
+<script>
+  if (localStorage.getItem("loggedIn") !== "true") {
+    window.location.href = "login.html";
+  }
+</script>
+
 <h2>📞 Task Shift AI – Admin Panel</h2>
-<h2>📞 testing tabish – Admin Panel</h2>
+
+<button onclick="logout()" style="float:right;">Logout</button>
 
 <div class="container">
   <div id="callList"></div>
@@ -27,9 +36,14 @@
   </div>
 </div>
 
-
-
-
 <script src="app.js"></script>
+
+<script>
+  function logout() {
+    localStorage.removeItem("loggedIn");
+    window.location.href = "login.html";
+  }
+</script>
+
 </body>
 </html>
