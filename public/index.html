@@ -1,12 +1,134 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Task Shift AI – Admin Panel</title>
+<meta charset="UTF-8">
+<title>Task Shift AI – Admin Panel</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
-  <link rel="stylesheet" href="style.css">
+<style>
+  body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: radial-gradient(circle at top, #1f2937, #020617);
+    color: #e5e7eb;
+    overflow-x: hidden;
+  }
+
+  h2 {
+    padding: 20px;
+    text-align: center;
+    animation: fadeDown 1.5s ease;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  button {
+    background: linear-gradient(135deg, #38bdf8, #6366f1);
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(99,102,241,0.6);
+  }
+
+  .container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    animation: fadeUp 1.5s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  #callList, #details {
+    background: #020617;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 0 30px rgba(56,189,248,0.15);
+    flex: 1;
+  }
+
+  pre {
+    background: #020617;
+    border: 1px solid #1e293b;
+    padding: 15px;
+    border-radius: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+    color: #38bdf8;
+  }
+
+  /* ROBOT */
+  .robot {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 110px;
+    height: 110px;
+    background: #020617;
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(56,189,248,0.4);
+    animation: float 4s ease-in-out infinite;
+    z-index: 999;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  .eyes {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+  }
+
+  .eye {
+    width: 16px;
+    height: 16px;
+    background: #38bdf8;
+    border-radius: 50%;
+    position: relative;
+  }
+
+  .pupil {
+    width: 6px;
+    height: 6px;
+    background: #020617;
+    border-radius: 50%;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+  }
+
+  .mouth {
+    width: 36px;
+    height: 6px;
+    background: #6366f1;
+    border-radius: 10px;
+    margin: 18px auto;
+  }
+
+  /* FullCalendar dark tweaks */
+  .fc {
+    background: #020617;
+    color: #e5e7eb;
+  }
+</style>
 </head>
 
 <body>
@@ -20,7 +142,9 @@
 
 <h2>📞 Task Shift AI – Admin Panel</h2>
 
-<button onclick="logout()" style="float:right;">Logout</button>
+<button onclick="logout()" style="position:absolute; top:20px; right:20px;">
+  Logout
+</button>
 
 <div class="container">
   <div id="callList"></div>
@@ -32,8 +156,18 @@
     <h3>Select Slot</h3>
     <div id="calendar"></div>
 
+    <br>
     <button onclick="confirmBooking()">Confirm & Send WhatsApp</button>
   </div>
+</div>
+
+<!-- 🤖 ROBOT ASSISTANT -->
+<div class="robot">
+  <div class="eyes">
+    <div class="eye"><div class="pupil"></div></div>
+    <div class="eye"><div class="pupil"></div></div>
+  </div>
+  <div class="mouth"></div>
 </div>
 
 <script src="app.js"></script>
@@ -43,6 +177,18 @@
     localStorage.removeItem("loggedIn");
     window.location.href = "login.html";
   }
+
+  // Robot eye tracking
+  document.addEventListener("mousemove", (e) => {
+    document.querySelectorAll(".pupil").forEach(pupil => {
+      const rect = pupil.parentElement.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      const angle = Math.atan2(y, x);
+      pupil.style.transform =
+        `translate(${Math.cos(angle) * 4}px, ${Math.sin(angle) * 4}px)`;
+    });
+  });
 </script>
 
 </body>
