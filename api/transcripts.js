@@ -37,10 +37,8 @@ const data = rows.slice(1).map((row, i) => {
   const transcript =
     row[getIndex("transcript")] || "";
 
-  const outcome =
-    row[getIndex("appointment_booked")] === "Yes"
-      ? "Scheduled"
-      : "Inquiry";
+  const bookedValue = (row[getIndex("appointment_booked")] || "").trim().toLowerCase();
+  const outcome = bookedValue === "yes" ? "Scheduled" : "Inquiry";
 
   const datetime =
     row[getIndex("call_started")] || "";
