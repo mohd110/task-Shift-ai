@@ -147,50 +147,159 @@ function loadRecentActivity(recentCalls) {
 
 
 /* -------------------- LOAD CALLS -------------------- */
-function loadCalls() {
-  const list = document.getElementById("callList");
-  if (!list) {
-    console.error("callList element not found");
+async function loadCalls() {
+  const tbody = document.getElementById("callsTable");
+  if (!tbody) {
+    console.error("callsTable element not found");
     return;
   }
 
-  list.innerHTML = "<h3>Calls</h3>";
+  try {
+    const response = await fetch("/api/transcripts");
+    if (!response.ok) throw new Error("Failed to load transcripts");
+    
+    const data = await response.json();
+    if (!Array.isArray(data)) {
+      console.error("Invalid transcripts response", data);
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#ef4444">Failed to load calls</td></tr>`;
+      return;
+    }
 
-  fetch("/api/transcripts")
-    .then(res => {
-      if (!res.ok) throw new Error("Failed to load transcripts");
-      return res.json();
-    })
-    .then(data => {
-      if (!Array.isArray(data)) {
-        console.error("Invalid transcripts response", data);
-        return;
-      }
+    tbody.innerHTML = ""; // Clear loading message
 
-      data.forEach(call => {
-        const div = document.createElement("div");
-        div.className = "call";
-        div.innerText = `${call.name} (${call.phone})`;
+    if (data.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#94a3b8">No calls found</td></tr>`;
+      return;
+    }
 
-        div.onclick = () => selectCall(call);
+    data.forEach(call => {
+      const row = document.createElement("tr");
+      
+      // Generate avatar color based on name
+      const avatarBg = getAvatarColor(call.name);
+      const initials = call.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
+      
+      // Format date/time
+      const dateTime = call.datetime ? formatDateTime(call.datetime) : "--";
+      
+      // Format outcome with badge
+      const badgeClass = call.outcome === "Scheduled" ? "scheduled" : "inquiry";
+      const outcomeBadge = `<span class="badge ${badgeClass}">${call.outcome}</span>`;
 
-        list.appendChild(div);
-      });
-    })
-    .catch(err => {
-      console.error(err);
-      list.innerHTML +=
-        "<p style='color:#ff4d4f'>Failed to load calls</p>";
+      row.innerHTML = `
+        <td>
+          <div class="callerCell">
+            <div class="callerAvatar" style="background-color:${avatarBg}">${initials}</div>
+            <div>
+              <div style="font-weight:600;color:#1e293b">${call.name}</div>
+              <div style="font-size:12px;color:#94a3b8">${call.phone || "N/A"}</div>
+            </div>
+          </div>
+        </td>
+        <td style="font-size:13px">${dateTime}</td>
+        <td style="font-size:13px">${call.duration || "--"}</td>
+        <td>${outcomeBadge}</td>
+        <td style="font-size:12px;color:#64748b;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${call.snippet || "--"}</td>
+        <td>
+          <button class="viewBtn" onclick="openTranscriptModal(${data.indexOf(call)})">View</button>
+        </td>
+      `;
+
+      // Store call data on row for quick access
+      row.dataset.callIndex = data.indexOf(call);
+      row.dataset.call = JSON.stringify(call);
+
+      tbody.appendChild(row);
     });
+
+    // Update KPI cards if they exist
+    updateCallsKPI(data);
+
+  } catch (err) {
+    console.error("Load calls error:", err);
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#ef4444">Error loading calls: ${err.message}</td></tr>`;
+  }
 }
 
-function selectCall(call) {
-  selectedCall = call;
-  const transcriptEl = document.getElementById("transcript");
+function updateCallsKPI(data) {
+  const totalCallsEl = document.getElementById("totalCalls");
+  if (!totalCallsEl) return; // Not on calls page, skip
 
-  if (transcriptEl) {
-    transcriptEl.innerText = call.transcript || "No transcript available";
+  const totalCalls = data.length;
+  const scheduledCalls = data.filter(c => c.outcome === "Scheduled").length;
+  const inquiryCalls = data.filter(c => c.outcome === "Inquiry").length;
+  const successRate = totalCalls > 0 ? Math.round((scheduledCalls / totalCalls) * 100) : 0;
+
+  const kpiCards = document.querySelectorAll(".cards .card-value");
+  if (kpiCards.length >= 4) {
+    kpiCards[0].innerText = totalCalls;
+    kpiCards[1].innerText = "3m 42s"; // Average duration - can be calculated if duration data exists
+    kpiCards[2].innerText = successRate + "%";
+    kpiCards[3].innerText = "$" + (scheduledCalls * 100); // Estimate savings
   }
+}
+
+function openTranscriptModal(index) {
+  const rows = document.querySelectorAll("#callsTable tr");
+  const row = rows[index];
+  if (!row) return;
+
+  const call = JSON.parse(row.dataset.call);
+  
+  // Populate modal with call data
+  document.getElementById("modalCallerName").innerText = call.name;
+  document.getElementById("modalCallerPhone").innerText = call.phone || "N/A";
+  document.getElementById("modalDateTime").innerText = call.datetime ? formatDateTime(call.datetime) : "--";
+  
+  const badgeClass = call.outcome === "Scheduled" ? "scheduled" : "inquiry";
+  document.getElementById("modalOutcome").innerHTML = `<span class="badge ${badgeClass}">${call.outcome}</span>`;
+  
+  document.getElementById("modalTranscript").innerText = call.transcript || "No transcript available";
+  
+  // Show modal
+  document.getElementById("transcriptModal").classList.add("active");
+}
+
+function closeTranscriptModal() {
+  document.getElementById("transcriptModal").classList.remove("active");
+}
+
+// Close modal when clicking outside content
+document.addEventListener("click", (e) => {
+  const modal = document.getElementById("transcriptModal");
+  if (modal && e.target === modal) {
+    closeTranscriptModal();
+  }
+});
+
+function formatDateTime(dateTimeStr) {
+  try {
+    const date = new Date(dateTimeStr);
+    const options = { 
+      month: "short", 
+      day: "numeric", 
+      year: "numeric", 
+      hour: "2-digit", 
+      minute: "2-digit",
+      hour12: true 
+    };
+    return date.toLocaleDateString("en-US", options);
+  } catch {
+    return dateTimeStr;
+  }
+}
+
+function getAvatarColor(name) {
+  const colors = [
+    "#3b82f6", "#ef4444", "#10b981", "#f59e0b", 
+    "#8b5cf6", "#ec4899", "#06b6d4", "#6366f1"
+  ];
+  
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return colors[Math.abs(hash) % colors.length];
 }
 
 /* -------------------- CALENDAR -------------------- */

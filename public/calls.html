@@ -87,9 +87,55 @@ td{
 /* ACTION BUTTON */
 .viewBtn{
   background:#e2e8f0;border:none;border-radius:8px;
-  padding:6px 10px;cursor:pointer;
+  padding:8px 12px;cursor:pointer;font-size:13px;color:#64748b;
+  font-weight:500;transition:all 0.2s;
 }
-.viewBtn:hover{background:#cbd5e1}
+.viewBtn:hover{background:#cbd5e1;color:#475569}
+
+/* CALLER CELL */
+.callerCell{display:flex;align-items:center;gap:10px}
+.callerAvatar{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:white;
+}
+
+/* MODAL */
+.modal{
+  display:none;position:fixed;top:0;left:0;
+  width:100%;height:100%;background:rgba(0,0,0,0.5);
+  z-index:1000;align-items:center;justify-content:center;
+}
+.modal.active{display:flex}
+.modalContent{
+  background:white;border-radius:16px;width:90%;
+  max-width:800px;max-height:90vh;overflow-y:auto;
+  padding:30px;box-shadow:0 10px 40px rgba(0,0,0,0.3);
+}
+.modalHeader{
+  display:flex;justify-content:space-between;
+  align-items:center;margin-bottom:20px;
+  border-bottom:1px solid #e5e7eb;padding-bottom:15px;
+}
+.modalHeader h3{margin:0;font-size:20px;color:#1e293b}
+.closeBtn{
+  background:none;border:none;font-size:24px;
+  cursor:pointer;color:#64748b;
+}
+.closeBtn:hover{color:#1e293b}
+.transcriptText{
+  line-height:1.6;color:#334155;font-size:14px;
+  background:#f8fafc;padding:16px;border-radius:10px;
+  white-space:pre-wrap;word-wrap:break-word;
+}
+.transcriptMeta{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;
+  margin-bottom:20px;padding:16px;background:#f8fafc;
+  border-radius:10px;
+}
+.metaItem{display:flex;flex-direction:column}
+.metaLabel{font-size:12px;color:#64748b;font-weight:600;margin-bottom:4px}
+.metaValue{font-size:14px;color:#1e293b;font-weight:500}
 </style>
 
 </head>
@@ -161,11 +207,47 @@ td{
 
       <tbody id="callsTable">
         <tr>
-          <td>Waiting for data...</td>
+          <td colspan="6" style="text-align:center;color:#94a3b8">Loading call data...</td>
         </tr>
       </tbody>
     </table>
   </div>
+
+</div>
+
+<!-- TRANSCRIPT MODAL -->
+<div id="transcriptModal" class="modal">
+  <div class="modalContent">
+    <div class="modalHeader">
+      <h3>Call Transcript</h3>
+      <button class="closeBtn" onclick="closeTranscriptModal()">&times;</button>
+    </div>
+    
+    <div class="transcriptMeta">
+      <div class="metaItem">
+        <div class="metaLabel">CALLER</div>
+        <div class="metaValue" id="modalCallerName">--</div>
+      </div>
+      <div class="metaItem">
+        <div class="metaLabel">PHONE</div>
+        <div class="metaValue" id="modalCallerPhone">--</div>
+      </div>
+      <div class="metaItem">
+        <div class="metaLabel">DATE & TIME</div>
+        <div class="metaValue" id="modalDateTime">--</div>
+      </div>
+      <div class="metaItem">
+        <div class="metaLabel">OUTCOME</div>
+        <div id="modalOutcome">--</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <h4 style="margin:0 0 12px 0;color:#1e293b;font-size:14px">TRANSCRIPT</h4>
+      <div class="transcriptText" id="modalTranscript">No transcript available</div>
+    </div>
+  </div>
+</div>
 
 </div>
 ```
