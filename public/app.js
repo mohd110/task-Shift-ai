@@ -2,10 +2,29 @@ let selectedCall = null;
 let selectedSlot = null;
 let calendar = null;
 
+// // Protect page
+// fetch("/api/auth-check")
+//   .then(res=>{
+//     if(!res.ok){
+//       window.location="/login.html";
+//     }
+//   });
+
+
 document.addEventListener("DOMContentLoaded", () => {
-  loadCalls();
-  initCalendar();
+
+// Only run call system on call page
+if (document.getElementById("callList")) {
+loadCalls();
+}
+
+// Only run calendar on calendar page
+if (document.getElementById("calendar")) {
+initCalendar();
+}
+
 });
+
 
 /* -------------------- LOAD CALLS -------------------- */
 function loadCalls() {
@@ -55,56 +74,58 @@ function selectCall(call) {
 }
 
 /* -------------------- CALENDAR -------------------- */
+/* -------------------- CALENDAR -------------------- */
 function initCalendar() {
-  const calendarEl = document.getElementById("calendar");
-  if (!calendarEl) {
-    console.error("calendar element not found");
-    return;
-  }
+const calendarEl = document.getElementById("calendar");
+if (!calendarEl) return; // prevents errors on other pages
 
-  calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: "timeGridWeek",
-    selectable: true,
-    height: "auto",
+calendar = new FullCalendar.Calendar(calendarEl, {
 
-    events(fetchInfo, successCallback, failureCallback) {
-      fetch("/api/booked-slots")
-        .then(res => {
-          if (!res.ok) throw new Error("Failed to load slots");
-          return res.json();
-        })
-        .then(data => {
-          const events = data.map(slot => ({
-            start: slot.start,
-            end: slot.end || slot.start,
-            display: "background",
-            backgroundColor: "#ff4d4f"
-          }));
-          successCallback(events);
-        })
-        .catch(err => {
-          console.error(err);
-          failureCallback(err);
-        });
-    },
 
-    selectAllow(selectInfo) {
-      const events = calendar.getEvents();
-      return !events.some(event =>
-        event.display === "background" &&
-        selectInfo.start >= event.start &&
-        selectInfo.start < event.end
-      );
-    },
+initialView: "dayGridMonth",
+height: "auto",
+selectable: true,
 
-    select(info) {
-      selectedSlot = info;
-      alert("Selected: " + info.startStr);
-    }
-  });
+headerToolbar: {
+  left: "prev,next today",
+  center: "title",
+  right: "dayGridMonth,timeGridWeek,timeGridDay"
+},
 
-  calendar.render();
+buttonText: {
+  today: "today",
+  month: "Month",
+  week: "Week",
+  day: "Day"
+},
+
+/* Block booked dates */
+events(fetchInfo, successCallback, failureCallback) {
+  fetch("/api/booked-slots")
+    .then(res => res.json())
+    .then(data => {
+      const events = data.map(slot => ({
+        start: slot.start,
+        end: slot.end || slot.start,
+        display: "background",
+        backgroundColor: "#fecaca"
+      }));
+      successCallback(events);
+    })
+    .catch(failureCallback);
+},
+
+select(info) {
+  selectedSlot = info;
+  alert("Selected: " + info.startStr);
 }
+
+
+});
+
+calendar.render();
+}
+
 
 /* -------------------- CONFIRM BOOKING -------------------- */
 function confirmBooking() {
