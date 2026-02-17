@@ -43,11 +43,17 @@ async function loadDashboard() {
       return;
     }
 
+    // Debug logging
+    console.log("API Response:", data);
+    console.log("Sample call:", data[0]);
+
     // Calculate metrics
     const totalCalls = data.length;
     const bookedCalls = data.filter(call => call.outcome === "Scheduled").length;
     const missedCalls = data.filter(call => call.outcome === "Inquiry").length;
     const revenue = bookedCalls * 50;
+
+    console.log("Total:", totalCalls, "Booked:", bookedCalls, "Missed:", missedCalls);
 
     // Update KPI cards
     document.getElementById("totalCalls").innerText = totalCalls;
