@@ -29,34 +29,75 @@ const getIndex = (name) => {
 };
 
 const data = rows.slice(1).map((row, i) => {
-  // Use the actual column names from the sheet
-  const nameIdx = getIndex("Name");
-  const phoneIdx = getIndex("Number");
-  const transcriptIdx = getIndex("Transcript");
-  const bookedIdx = getIndex("Booked");
-  const datetimeIdx = getIndex("Call Started");
-  const notesIdx = getIndex("Key Notes");
+  // Map all column indices
+  const indices = {
+    name: getIndex("Name") >= 0 ? getIndex("Name") : getIndex("caller_name"),
+    phone: getIndex("Number") >= 0 ? getIndex("Number") : getIndex("caller_phone"),
+    email: getIndex("Email") >= 0 ? getIndex("Email") : getIndex("caller_email"),
+    purposeOfCall: getIndex("Purpose of call") >= 0 ? getIndex("Purpose of call") : getIndex("purpose_of_call"),
+    booked: getIndex("Booked") >= 0 ? getIndex("Booked") : getIndex("appointment_booked"),
+    time: getIndex("Time") >= 0 ? getIndex("Time") : getIndex("appointment_time"),
+    keyNotes: getIndex("Key Notes") >= 0 ? getIndex("Key Notes") : getIndex("key_notes"),
+    callStarted: getIndex("Call Started") >= 0 ? getIndex("Call Started") : getIndex("call_started"),
+    callEnded: getIndex("Call ended") >= 0 ? getIndex("Call ended") : getIndex("call_ended"),
+    transcript: getIndex("Transcript") >= 0 ? getIndex("Transcript") : getIndex("transcript"),
+    problemType: getIndex("problem_type"),
+    teamSize: getIndex("team_size"),
+    durationMinutes: getIndex("call_duration_minutes"),
+    endedReason: getIndex("ended_reason"),
+    callCost: getIndex("call_cost"),
+    recordingUrl: getIndex("recording_url"),
+    assistantName: getIndex("assistant_name"),
+    loggedAt: getIndex("logged_at")
+  };
 
-  const name = (nameIdx >= 0 && row[nameIdx]) ? row[nameIdx].trim() : "Unknown";
-  const phone = (phoneIdx >= 0 && row[phoneIdx]) ? row[phoneIdx].trim() : "";
-  const transcript = (transcriptIdx >= 0 && row[transcriptIdx]) ? row[transcriptIdx] : "";
-  
-  const bookedValue = (bookedIdx >= 0 && row[bookedIdx]) ? row[bookedIdx].trim().toLowerCase() : "";
-  const outcome = bookedValue === "yes" ? "Scheduled" : "Inquiry";
-  
-  const datetime = (datetimeIdx >= 0 && row[datetimeIdx]) ? row[datetimeIdx] : "";
-  const duration = "--"; // Not available in current columns
-  const snippet = (notesIdx >= 0 && row[notesIdx]) ? row[notesIdx] : transcript.substring(0, 120);
+  // Extract data with fallbacks
+  const name = (indices.name >= 0 && row[indices.name]) ? row[indices.name].trim() : "Unknown";
+  const phone = (indices.phone >= 0 && row[indices.phone]) ? row[indices.phone].trim() : "";
+  const email = (indices.email >= 0 && row[indices.email]) ? row[indices.email].trim() : "";
+  const purposeOfCall = (indices.purposeOfCall >= 0 && row[indices.purposeOfCall]) ? row[indices.purposeOfCall].trim() : "";
+  const transcript = (indices.transcript >= 0 && row[indices.transcript]) ? row[indices.transcript] : "";
+  const keyNotes = (indices.keyNotes >= 0 && row[indices.keyNotes]) ? row[indices.keyNotes].trim() : "";
+  const callStarted = (indices.callStarted >= 0 && row[indices.callStarted]) ? row[indices.callStarted] : "";
+  const callEnded = (indices.callEnded >= 0 && row[indices.callEnded]) ? row[indices.callEnded] : "";
+  const problemType = (indices.problemType >= 0 && row[indices.problemType]) ? row[indices.problemType].trim() : "";
+  const teamSize = (indices.teamSize >= 0 && row[indices.teamSize]) ? row[indices.teamSize].trim() : "";
+  const durationMinutes = (indices.durationMinutes >= 0 && row[indices.durationMinutes]) ? row[indices.durationMinutes].trim() : "";
+  const endedReason = (indices.endedReason >= 0 && row[indices.endedReason]) ? row[indices.endedReason].trim() : "";
+  const callCost = (indices.callCost >= 0 && row[indices.callCost]) ? row[indices.callCost].trim() : "";
+  const recordingUrl = (indices.recordingUrl >= 0 && row[indices.recordingUrl]) ? row[indices.recordingUrl].trim() : "";
+  const assistantName = (indices.assistantName >= 0 && row[indices.assistantName]) ? row[indices.assistantName].trim() : "";
+  const loggedAt = (indices.loggedAt >= 0 && row[indices.loggedAt]) ? row[indices.loggedAt] : "";
+
+  // Determine outcome
+  const bookedValue = (indices.booked >= 0 && row[indices.booked]) ? row[indices.booked].trim().toLowerCase() : "";
+  const outcome = bookedValue === "yes" || bookedValue === "true" ? "Scheduled" : "Inquiry";
+
+  // Create snippet from key notes or transcript
+  const snippet = keyNotes || transcript.substring(0, 120) || purposeOfCall;
 
   return {
     callId: i + 1,
     name,
     phone,
+    email,
+    purposeOfCall,
     transcript,
     outcome,
-    datetime,
-    duration,
-    snippet
+    datetime: callStarted,
+    duration: durationMinutes || "--",
+    snippet,
+    keyNotes,
+    callStarted,
+    callEnded,
+    problemType,
+    teamSize,
+    endedReason,
+    callCost,
+    recordingUrl,
+    assistantName,
+    loggedAt,
+    appointmentTime: indices.time >= 0 ? row[indices.time] : ""
   };
 });
 

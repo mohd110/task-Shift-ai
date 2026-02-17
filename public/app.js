@@ -172,15 +172,16 @@ async function loadCalls() {
       return;
     }
 
-    data.forEach(call => {
+    data.forEach((call, index) => {
       const row = document.createElement("tr");
       
       // Generate avatar color based on name
       const avatarBg = getAvatarColor(call.name);
       const initials = call.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
       
-      // Format date/time
-      const dateTime = call.datetime ? formatDateTime(call.datetime) : "--";
+      // Format date/time - use appointmentTime if available, otherwise use callStarted
+      const displayTime = call.appointmentTime || call.datetime;
+      const dateTime = displayTime ? formatDateTime(displayTime) : "--";
       
       // Format outcome with badge
       const badgeClass = call.outcome === "Scheduled" ? "scheduled" : "inquiry";
@@ -197,16 +198,16 @@ async function loadCalls() {
           </div>
         </td>
         <td style="font-size:13px">${dateTime}</td>
-        <td style="font-size:13px">${call.duration || "--"}</td>
+        <td style="font-size:13px">${call.duration || "--"}${call.duration && call.duration !== "--" ? " min" : ""}</td>
         <td>${outcomeBadge}</td>
         <td style="font-size:12px;color:#64748b;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${call.snippet || "--"}</td>
         <td>
-          <button class="viewBtn" onclick="openTranscriptModal(${data.indexOf(call)})">View</button>
+          <button class="viewBtn" onclick="openTranscriptDetail(${index})">View</button>
         </td>
       `;
 
       // Store call data on row for quick access
-      row.dataset.callIndex = data.indexOf(call);
+      row.dataset.callIndex = index;
       row.dataset.call = JSON.stringify(call);
 
       tbody.appendChild(row);
@@ -227,37 +228,44 @@ function updateCallsKPI(data) {
 
   const totalCalls = data.length;
   const scheduledCalls = data.filter(c => c.outcome === "Scheduled").length;
-  const inquiryCalls = data.filter(c => c.outcome === "Inquiry").length;
-  const successRate = totalCalls > 0 ? Math.round((scheduledCalls / totalCalls) * 100) : 0;
+  
+  // Calculate success rate: calls with duration > 1 minute
+  const successfulCalls = data.filter(d => {
+    const duration = parseInt(d.duration) || 0;
+    return duration > 1;
+  }).length;
+  const successRate = totalCalls > 0 ? Math.round((successfulCalls / totalCalls) * 100) : 0;
+  
+  // Calculate average duration
+  const totalDuration = data.reduce((sum, d) => {
+    return sum + (parseInt(d.duration) || 0);
+  }, 0);
+  const avgDuration = totalCalls > 0 ? Math.round(totalDuration / totalCalls) : 0;
+  
+  // Total savings: $10 per booked call
+  const totalSavings = scheduledCalls * 10;
 
   const kpiCards = document.querySelectorAll(".cards .card-value");
   if (kpiCards.length >= 4) {
     kpiCards[0].innerText = totalCalls;
-    kpiCards[1].innerText = "3m 42s"; // Average duration - can be calculated if duration data exists
+    kpiCards[1].innerText = avgDuration + "m";
     kpiCards[2].innerText = successRate + "%";
-    kpiCards[3].innerText = "$" + (scheduledCalls * 100); // Estimate savings
+    kpiCards[3].innerText = "$" + totalSavings;
   }
 }
 
-function openTranscriptModal(index) {
+function openTranscriptDetail(index) {
   const rows = document.querySelectorAll("#callsTable tr");
   const row = rows[index];
   if (!row) return;
 
   const call = JSON.parse(row.dataset.call);
   
-  // Populate modal with call data
-  document.getElementById("modalCallerName").innerText = call.name;
-  document.getElementById("modalCallerPhone").innerText = call.phone || "N/A";
-  document.getElementById("modalDateTime").innerText = call.datetime ? formatDateTime(call.datetime) : "--";
+  // Store call data in sessionStorage to pass to detail page
+  sessionStorage.setItem("selectedCall", JSON.stringify(call));
   
-  const badgeClass = call.outcome === "Scheduled" ? "scheduled" : "inquiry";
-  document.getElementById("modalOutcome").innerHTML = `<span class="badge ${badgeClass}">${call.outcome}</span>`;
-  
-  document.getElementById("modalTranscript").innerText = call.transcript || "No transcript available";
-  
-  // Show modal
-  document.getElementById("transcriptModal").classList.add("active");
+  // Navigate to transcript detail page
+  window.location.href = "/transcript-detail.html";
 }
 
 function closeTranscriptModal() {
