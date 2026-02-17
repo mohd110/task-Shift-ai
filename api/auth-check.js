@@ -1,4 +1,4 @@
-export default function handler(req, res) {
+module.exports = function handler(req, res) {
   const cookie = req.headers.cookie || "";
 
   if(!cookie.includes("session=valid")){
@@ -6,4 +6,4 @@ export default function handler(req, res) {
   }
 
   res.status(200).json({authenticated:true});
-}
+};

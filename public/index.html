@@ -6,6 +6,7 @@
 <title>Task Shift AI</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
 <style>
 *{box-sizing:border-box}
@@ -209,16 +210,14 @@ body{
 
     <div class="card">
       <div class="card-title">Revenue</div>
-      <div class="card-value">$--</div>
+      <div class="card-value" id="revenue">$--</div>
     </div>
   </div>
 
   <!-- CHART AREA -->
   <div class="section">
     <h3>Call Volume Trends</h3>
-    <div style="height:260px;display:flex;align-items:center;justify-content:center;color:#94a3b8">
-      (Will connect to second Google Sheet)
-    </div>
+    <canvas id="volumeChart" style="height:260px;max-height:300px"></canvas>
   </div>
 
   <!-- RECENT ACTIVITY -->

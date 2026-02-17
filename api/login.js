@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   const { password } = req.body;
 
   if(password !== process.env.ADMIN_PASSWORD){
@@ -11,4 +11,4 @@ export default async function handler(req, res) {
   );
 
   res.status(200).json({success:true});
-}
+};
