@@ -30,18 +30,10 @@ const headers = rows[0];
 
 const colIndex = (name) => headers.indexOf(name);
 
-const nameCol =
-  colIndex("caller_name") !== -1
-    ? colIndex("caller_name")
-    : colIndex("Name");
-
-const phoneCol =
-  colIndex("caller_phone") !== -1
-    ? colIndex("caller_phone")
-    : colIndex("Number");
-
-const bookedCol = colIndex("appointment_booked");
-const timeCol = colIndex("appointment_time");
+const nameCol = colIndex("Name");
+const phoneCol = colIndex("Number");
+const bookedCol = colIndex("Booked");
+const timeCol = colIndex("Time");
 
 // 2️⃣ find correct row
 let targetRow = -1;

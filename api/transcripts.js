@@ -20,37 +20,33 @@ const rows = response.data.values;
 if (!rows || rows.length < 2) return res.json([]);
 
 const headers = rows[0];
-const getIndex = (name) => headers.indexOf(name);
+console.log("Headers found:", headers);
+
+const getIndex = (name) => {
+  const index = headers.indexOf(name);
+  console.log(`Column "${name}":`, index);
+  return index;
+};
 
 const data = rows.slice(1).map((row, i) => {
+  // Use the actual column names from the sheet
+  const nameIdx = getIndex("Name");
+  const phoneIdx = getIndex("Number");
+  const transcriptIdx = getIndex("Transcript");
+  const bookedIdx = getIndex("Booked");
+  const datetimeIdx = getIndex("Call Started");
+  const notesIdx = getIndex("Key Notes");
 
-  const name =
-    row[getIndex("caller_name")] ||
-    row[getIndex("Name")] ||
-    "Unknown";
-
-  const phone =
-    row[getIndex("caller_phone")] ||
-    row[getIndex("Number")] ||
-    "";
-
-  const transcript =
-    row[getIndex("transcript")] || "";
-
-  const bookedValue = (row[getIndex("appointment_booked")] || "").trim().toLowerCase();
+  const name = (nameIdx >= 0 && row[nameIdx]) ? row[nameIdx].trim() : "Unknown";
+  const phone = (phoneIdx >= 0 && row[phoneIdx]) ? row[phoneIdx].trim() : "";
+  const transcript = (transcriptIdx >= 0 && row[transcriptIdx]) ? row[transcriptIdx] : "";
+  
+  const bookedValue = (bookedIdx >= 0 && row[bookedIdx]) ? row[bookedIdx].trim().toLowerCase() : "";
   const outcome = bookedValue === "yes" ? "Scheduled" : "Inquiry";
-
-  const datetime =
-    row[getIndex("call_started")] || "";
-
-  const duration =
-    row[getIndex("call_duration_minutes")]
-      ? row[getIndex("call_duration_minutes")] + " min"
-      : "--";
-
-  const snippet =
-    row[getIndex("key_notes")] ||
-    transcript.substring(0, 120);
+  
+  const datetime = (datetimeIdx >= 0 && row[datetimeIdx]) ? row[datetimeIdx] : "";
+  const duration = "--"; // Not available in current columns
+  const snippet = (notesIdx >= 0 && row[notesIdx]) ? row[notesIdx] : transcript.substring(0, 120);
 
   return {
     callId: i + 1,
