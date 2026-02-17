@@ -12,15 +12,20 @@ let calendar = null;
 
 
 document.addEventListener("DOMContentLoaded", () => {
+console.log("🚀 DOMContentLoaded event fired");
 
 // Only run call system on call page
 if (document.getElementById("callsTable")) {
-loadCalls();
+  console.log("📋 Calls table found - loading calls");
+  loadCalls();
+} else {
+  console.log("⚠️ Calls table NOT found on this page");
 }
 
 // Only run calendar on calendar page
 if (document.getElementById("calendar")) {
-initCalendar();
+  console.log("📅 Calendar found - initializing calendar");
+  initCalendar();
 }
 
 // Only run dashboard on index page
@@ -150,29 +155,48 @@ function loadRecentActivity(recentCalls) {
 async function loadCalls() {
   const tbody = document.getElementById("callsTable");
   if (!tbody) {
-    console.error("callsTable element not found");
+    console.error("❌ callsTable element not found");
     return;
   }
 
+  console.log("📞 Starting to load calls...");
+
   try {
+    console.log("🔄 Fetching from /api/transcripts");
     const response = await fetch("/api/transcripts");
-    if (!response.ok) throw new Error("Failed to load transcripts");
+    console.log("📦 Response status:", response.status);
+    
+    if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     
     const data = await response.json();
+    console.log("✅ API Response received:", data);
+    console.log("📊 Total records:", data.length);
+    
     if (!Array.isArray(data)) {
-      console.error("Invalid transcripts response", data);
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#ef4444">Failed to load calls</td></tr>`;
+      console.error("❌ Response is not an array:", typeof data, data);
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#ef4444">Invalid data format</td></tr>`;
       return;
     }
 
     tbody.innerHTML = ""; // Clear loading message
 
     if (data.length === 0) {
+      console.warn("⚠️ No calls found in response");
       tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#94a3b8">No calls found</td></tr>`;
       return;
     }
 
+    console.log("🎯 First call sample:", data[0]);
+
     data.forEach((call, index) => {
+      console.log(`📌 Processing call ${index + 1}:`, {
+        name: call.name,
+        phone: call.phone,
+        datetime: call.datetime,
+        duration: call.duration,
+        outcome: call.outcome
+      });
+
       const row = document.createElement("tr");
       
       // Generate avatar color based on name
@@ -213,18 +237,26 @@ async function loadCalls() {
       tbody.appendChild(row);
     });
 
+    console.log("✅ All calls rendered successfully");
+
     // Update KPI cards if they exist
     updateCallsKPI(data);
 
   } catch (err) {
-    console.error("Load calls error:", err);
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#ef4444">Error loading calls: ${err.message}</td></tr>`;
+    console.error("❌ Load calls error:", err);
+    console.error("Error stack:", err.stack);
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#ef4444">Error: ${err.message}</td></tr>`;
   }
 }
 
 function updateCallsKPI(data) {
   const totalCallsEl = document.getElementById("totalCalls");
-  if (!totalCallsEl) return; // Not on calls page, skip
+  if (!totalCallsEl) {
+    console.warn("⚠️ totalCalls element not found, skipping KPI update");
+    return; // Not on calls page, skip
+  }
+
+  console.log("📊 Updating KPI metrics...");
 
   const totalCalls = data.length;
   const scheduledCalls = data.filter(c => c.outcome === "Scheduled").length;
@@ -245,12 +277,26 @@ function updateCallsKPI(data) {
   // Total savings: $10 per booked call
   const totalSavings = scheduledCalls * 10;
 
+  console.log("📈 KPI Metrics calculated:", {
+    totalCalls,
+    avgDuration: avgDuration + "m",
+    successRate: successRate + "%",
+    totalSavings: "$" + totalSavings,
+    scheduledCalls,
+    successfulCalls
+  });
+
   const kpiCards = document.querySelectorAll(".cards .card-value");
+  console.log("🎴 Found KPI cards:", kpiCards.length);
+  
   if (kpiCards.length >= 4) {
     kpiCards[0].innerText = totalCalls;
     kpiCards[1].innerText = avgDuration + "m";
     kpiCards[2].innerText = successRate + "%";
     kpiCards[3].innerText = "$" + totalSavings;
+    console.log("✅ KPI cards updated");
+  } else {
+    console.warn("⚠️ Expected 4 KPI cards, found:", kpiCards.length);
   }
 }
 

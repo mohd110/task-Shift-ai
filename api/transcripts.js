@@ -2,31 +2,37 @@ const { google } = require("googleapis");
 
 module.exports = async function handler(req, res) {
 try {
+  console.log("📞 [API] Transcripts endpoint called");
 
+  const auth = new google.auth.GoogleAuth({
+    credentials: JSON.parse(process.env.GOOGLE_CREDS),
+    scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
+  });
 
-const auth = new google.auth.GoogleAuth({
-  credentials: JSON.parse(process.env.GOOGLE_CREDS),
-  scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
-});
+  const sheets = google.sheets({ version: "v4", auth });
 
-const sheets = google.sheets({ version: "v4", auth });
+  console.log("📊 [API] Fetching from Google Sheets...");
+  const response = await sheets.spreadsheets.values.get({
+    spreadsheetId: process.env.SHEET_ID,
+    range: "Sheet1!A1:Z",
+  });
 
-const response = await sheets.spreadsheets.values.get({
-  spreadsheetId: process.env.SHEET_ID,
-  range: "Sheet1!A1:Z",
-});
+  const rows = response.data.values;
+  console.log("✅ [API] Received rows:", rows ? rows.length : 0);
+  
+  if (!rows || rows.length < 2) {
+    console.warn("⚠️ [API] No rows found or insufficient data");
+    return res.json([]);
+  }
 
-const rows = response.data.values;
-if (!rows || rows.length < 2) return res.json([]);
+  const headers = rows[0];
+  console.log("🔤 [API] Headers found:", headers);
 
-const headers = rows[0];
-console.log("Headers found:", headers);
-
-const getIndex = (name) => {
-  const index = headers.indexOf(name);
-  console.log(`Column "${name}":`, index);
-  return index;
-};
+  const getIndex = (name) => {
+    const index = headers.indexOf(name);
+    console.log(`  ➜ Column "${name}": ${index}`);
+    return index;
+  };
 
 const data = rows.slice(1).map((row, i) => {
   // Map all column indices
@@ -101,11 +107,17 @@ const data = rows.slice(1).map((row, i) => {
   };
 });
 
+console.log("✅ [API] Processed data records:", data.length);
+if (data.length > 0) {
+  console.log("📌 [API] Sample record:", data[0]);
+}
+
 res.status(200).json(data);
 
 
 } catch (err) {
-console.error(err);
+console.error("❌ [API] Error:", err.message);
+console.error("Stack:", err.stack);
 res.status(500).json({ error: err.message });
 }
 };
