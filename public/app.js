@@ -14,7 +14,7 @@ let calendar = null;
 document.addEventListener("DOMContentLoaded", () => {
 
 // Only run call system on call page
-if (document.getElementById("callList")) {
+if (document.getElementById("callsTable")) {
 loadCalls();
 }
 
