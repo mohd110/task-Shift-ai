@@ -55,14 +55,22 @@ module.exports = async function handler(req, res) {
       .slice(1)
       .filter(r => {
         const bookedStatus = r[bookedStatusIdx] ? r[bookedStatusIdx].trim().toLowerCase() : "";
-        const hasDate = r[scheduledDateIdx] && r[scheduledDateIdx].trim();
+        let timeValue = r[scheduledDateIdx] ? r[scheduledDateIdx].trim() : "";
+        
+        // Remove quotes if present
+        timeValue = timeValue.replace(/^"|"$/g, '');
+        
+        const hasDate = timeValue && timeValue.length > 0;
         const isBooked = bookedStatus === "yes" || bookedStatus === "true" || bookedStatus === "booked" || bookedStatus === "1";
         
         return isBooked && hasDate;
       })
       .map((r, i) => {
         try {
-          const startTime = r[scheduledDateIdx];
+          let startTime = r[scheduledDateIdx] ? r[scheduledDateIdx].trim() : "";
+          // Remove quotes if present
+          startTime = startTime.replace(/^"|"$/g, '');
+          
           const durationMins = parseInt(r[durationIdx]) || 60;
           
           // Calculate end time
