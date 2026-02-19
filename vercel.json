@@ -19,9 +19,5 @@
       "src": "/(.*)",
       "dest": "/public/$1"
     }
-  ],
-  "env": {
-    "GOOGLE_CREDS": "@google_creds",
-    "SHEET_ID": "@sheet_id"
-  }
+  ]
 }
