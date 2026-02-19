@@ -32,22 +32,23 @@ module.exports = async function handler(req, res) {
     const purposeIdx = getIndex("Purpose of call");
     const noteIdx = getIndex("Key Notes");
     const durationIdx = getIndex("call_duration_minutes");
-    const bookedStatusIdx = getIndex("Booked"); // Changed from index 5
-    const scheduledDateIdx = getIndex("Time"); // Changed from index 4
+    const bookedStatusIdx = getIndex("Booked");
+    const scheduledDateIdx = getIndex("Time");
 
     console.log("Column indices:", {
       nameIdx, phoneIdx, emailIdx, purposeIdx, noteIdx, durationIdx, bookedStatusIdx, scheduledDateIdx
     });
 
-    // Log first few rows for debugging
-    console.log("📋 Sample rows:");
-    rows.slice(1, 4).forEach((row, idx) => {
-      console.log(`Row ${idx}:`, {
-        name: row[nameIdx],
-        booked: row[bookedStatusIdx],
-        time: row[scheduledDateIdx]
-      });
-    });
+    // DEBUG: Return all rows with their data for debugging
+    const debugData = rows.slice(1).map((r, i) => ({
+      rowNum: i + 2,
+      name: r[nameIdx],
+      booked: r[bookedStatusIdx],
+      time: r[scheduledDateIdx],
+      allData: r
+    }));
+    
+    console.log("📊 All rows:", debugData);
 
     // Extract booked slots with full details
     const bookedSlots = rows
@@ -57,9 +58,6 @@ module.exports = async function handler(req, res) {
         const hasDate = r[scheduledDateIdx] && r[scheduledDateIdx].trim();
         const isBooked = bookedStatus === "yes" || bookedStatus === "true" || bookedStatus === "booked" || bookedStatus === "1";
         
-        if (hasDate) {
-          console.log(`Checking row: booked="${bookedStatus}" (${isBooked}), hasDate=${hasDate}`);
-        }
         return isBooked && hasDate;
       })
       .map((r, i) => {
