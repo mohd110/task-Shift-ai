@@ -39,13 +39,28 @@ module.exports = async function handler(req, res) {
       nameIdx, phoneIdx, emailIdx, purposeIdx, noteIdx, durationIdx, bookedStatusIdx, scheduledDateIdx
     });
 
+    // Log first few rows for debugging
+    console.log("📋 Sample rows:");
+    rows.slice(1, 4).forEach((row, idx) => {
+      console.log(`Row ${idx}:`, {
+        name: row[nameIdx],
+        booked: row[bookedStatusIdx],
+        time: row[scheduledDateIdx]
+      });
+    });
+
     // Extract booked slots with full details
     const bookedSlots = rows
       .slice(1)
       .filter(r => {
         const bookedStatus = r[bookedStatusIdx] ? r[bookedStatusIdx].trim().toLowerCase() : "";
         const hasDate = r[scheduledDateIdx] && r[scheduledDateIdx].trim();
-        return (bookedStatus === "yes" || bookedStatus === "true" || bookedStatus === "booked") && hasDate;
+        const isBooked = bookedStatus === "yes" || bookedStatus === "true" || bookedStatus === "booked" || bookedStatus === "1";
+        
+        if (hasDate) {
+          console.log(`Checking row: booked="${bookedStatus}" (${isBooked}), hasDate=${hasDate}`);
+        }
+        return isBooked && hasDate;
       })
       .map((r, i) => {
         try {
