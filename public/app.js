@@ -357,7 +357,8 @@ function getAvatarColor(name) {
 }
 
 /* -------------------- CALENDAR -------------------- */
-/* -------------------- CALENDAR -------------------- */
+let bookedSlotsData = [];
+
 function initCalendar() {
 const calendarEl = document.getElementById("calendar");
 if (!calendarEl) return; // prevents errors on other pages
@@ -387,26 +388,109 @@ events(fetchInfo, successCallback, failureCallback) {
   fetch("/api/booked-slots")
     .then(res => res.json())
     .then(data => {
+      bookedSlotsData = data; // Store for later reference
       const events = data.map(slot => ({
+        id: slot.id,
         start: slot.start,
         end: slot.end || slot.start,
         display: "background",
-        backgroundColor: "#fecaca"
+        backgroundColor: slot.backgroundColor || "#fecaca",
+        extendedProps: {
+          name: slot.name,
+          phone: slot.phone,
+          email: slot.email,
+          purpose: slot.purpose,
+          notes: slot.notes,
+          duration: slot.duration
+        }
       }));
       successCallback(events);
     })
     .catch(failureCallback);
 },
 
+dateClick(info) {
+  const selectedDate = info.dateStr;
+  displaySlotsForDate(selectedDate);
+},
+
 select(info) {
   selectedSlot = info;
-  alert("Selected: " + info.startStr);
+  const selectedDate = info.startStr;
+  displaySlotsForDate(selectedDate);
 }
 
 
 });
 
 calendar.render();
+}
+
+function displaySlotsForDate(dateStr) {
+  // Find all slots for this date
+  const slotsForDate = bookedSlotsData.filter(slot => {
+    const slotDate = slot.start.split("T")[0]; // Get date part
+    return slotDate === dateStr;
+  });
+
+  const dateTitle = document.getElementById("selectedDateTitle");
+  const slotsContainer = document.getElementById("slotsContainer");
+  const noSlotsMessage = document.getElementById("noSlotsMessage");
+
+  if (slotsForDate.length === 0) {
+    dateTitle.textContent = `${formatDateDisplay(dateStr)} - No booked slots`;
+    slotsContainer.style.display = "none";
+    noSlotsMessage.style.display = "block";
+    return;
+  }
+
+  dateTitle.textContent = `${formatDateDisplay(dateStr)} (${slotsForDate.length} slot${slotsForDate.length > 1 ? "s" : ""})`;
+  noSlotsMessage.style.display = "none";
+  slotsContainer.style.display = "block";
+  slotsContainer.innerHTML = "";
+
+  slotsForDate.forEach(slot => {
+    const slotEl = document.createElement("div");
+    slotEl.className = "slotCard";
+    
+    const timeStr = formatTime(slot.start);
+    const avatarBg = getAvatarColor(slot.name);
+    const initials = slot.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
+
+    slotEl.innerHTML = `
+      <div style="display: flex; gap: 12px; padding: 12px; border: 1px solid #e5e7eb; border-radius: 10px; background: #fafbfc; margin-bottom: 12px;">
+        <div style="background-color: ${avatarBg}; color: white; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; flex-shrink: 0;">
+          ${initials}
+        </div>
+        <div style="flex: 1;">
+          <div style="font-weight: 600; color: #1e293b; margin-bottom: 4px;">${slot.name}</div>
+          <div style="font-size: 12px; color: #64748b; margin-bottom: 6px;">${slot.phone}</div>
+          <div style="font-size: 12px; color: #475569; margin-bottom: 4px;"><strong>Time:</strong> ${timeStr}</div>
+          <div style="font-size: 12px; color: #475569; margin-bottom: 4px;"><strong>Duration:</strong> ${slot.duration} min</div>
+          <div style="font-size: 12px; color: #475569; margin-bottom: 4px;"><strong>Purpose:</strong> ${slot.purpose}</div>
+          ${slot.notes ? `<div style="font-size: 12px; color: #475569; margin-top: 6px; padding-top: 6px; border-top: 1px solid #e2e8f0;"><strong>Notes:</strong> ${slot.notes}</div>` : ""}
+        </div>
+      </div>
+    `;
+    
+    slotsContainer.appendChild(slotEl);
+  });
+}
+
+function formatDateDisplay(dateStr) {
+  const date = new Date(dateStr + "T00:00:00");
+  const options = { weekday: "long", month: "short", day: "numeric", year: "numeric" };
+  return date.toLocaleDateString("en-US", options);
+}
+
+function formatTime(dateTimeStr) {
+  try {
+    const date = new Date(dateTimeStr);
+    const options = { hour: "2-digit", minute: "2-digit", hour12: true };
+    return date.toLocaleTimeString("en-US", options);
+  } catch {
+    return dateTimeStr;
+  }
 }
 
 

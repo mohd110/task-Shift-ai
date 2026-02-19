@@ -66,9 +66,12 @@ body{
   background:#f1f5f9;padding:12px;border-radius:10px;margin-bottom:12px;
 }
 
-button{
-  margin-top:10px;padding:10px;border:none;border-radius:8px;
-  background:#0284c7;color:white;cursor:pointer;
+.slotCard {
+  background: white;
+}
+
+.slotCard:last-child > div {
+  margin-bottom: 0 !important;
 }
 /* ===== FULLCALENDAR SAAS STYLE ===== */
 
@@ -222,18 +225,13 @@ background:#bae6fd !important;
 
   <!-- RIGHT PANEL -->
   <div class="schedulePanel">
-    <h3>Today's Schedule</h3>
-
-    <div class="upcoming">
-      Client Onboarding<br>
-      <small>10:30 AM</small>
+    <h3 id="selectedDateTitle">Select a date</h3>
+    <div id="slotsContainer" style="display: none;">
+      <!-- Slots will be rendered here -->
     </div>
-
-    <div class="upcoming">
-      Consultation<br>
-      <small>01:45 PM</small>
+    <div id="noSlotsMessage" style="padding: 20px; text-align: center; color: #94a3b8;">
+      No booked slots for selected date
     </div>
-
   </div>
 
 </div>
