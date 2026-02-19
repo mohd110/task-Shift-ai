@@ -391,10 +391,13 @@ events(fetchInfo, successCallback, failureCallback) {
       bookedSlotsData = data; // Store for later reference
       const events = data.map(slot => ({
         id: slot.id,
+        title: `${slot.name} - ${slot.purpose}`,
         start: slot.start,
-        end: slot.end || slot.start,
-        display: "background",
-        backgroundColor: slot.backgroundColor || "#fecaca",
+        end: slot.end,
+        display: "block",
+        backgroundColor: "#fecaca",
+        borderColor: "#fca5a5",
+        textColor: "#7f1d1d",
         extendedProps: {
           name: slot.name,
           phone: slot.phone,
@@ -404,9 +407,13 @@ events(fetchInfo, successCallback, failureCallback) {
           duration: slot.duration
         }
       }));
+      console.log("📅 Calendar events:", events);
       successCallback(events);
     })
-    .catch(failureCallback);
+    .catch(err => {
+      console.error("❌ Error fetching booked slots:", err);
+      failureCallback(err);
+    });
 },
 
 dateClick(info) {

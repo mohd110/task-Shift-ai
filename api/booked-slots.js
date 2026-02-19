@@ -48,10 +48,18 @@ module.exports = async function handler(req, res) {
         return (bookedStatus === "yes" || bookedStatus === "true" || bookedStatus === "booked") && hasDate;
       })
       .map((r, i) => {
+        const startTime = r[scheduledDateIdx];
+        const durationMins = parseInt(r[durationIdx]) || 60;
+        
+        // Calculate end time
+        const startDate = new Date(startTime);
+        const endDate = new Date(startDate.getTime() + durationMins * 60000);
+        const endTime = endDate.toISOString();
+
         return {
           id: i,
-          start: r[scheduledDateIdx], // scheduled_datetime
-          end: r[scheduledDateIdx],
+          start: startTime,
+          end: endTime,
           title: `${r[nameIdx] || "Client"} - ${r[purposeIdx] || "Appointment"}`,
           name: r[nameIdx] || "Unknown",
           phone: r[phoneIdx] || "",
