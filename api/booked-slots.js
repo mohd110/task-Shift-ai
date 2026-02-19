@@ -18,6 +18,7 @@ module.exports = async function handler(req, res) {
     if (rows.length < 2) return res.json([]);
 
     const headers = rows[0];
+    console.log("📋 Headers:", headers);
     
     // Helper to find column index
     const getIndex = (name) => {
@@ -25,22 +26,32 @@ module.exports = async function handler(req, res) {
       return index >= 0 ? index : headers.indexOf(name.toLowerCase());
     };
 
+    const nameIdx = getIndex("Name");
+    const phoneIdx = getIndex("Number");
+    const emailIdx = getIndex("Email");
+    const purposeIdx = getIndex("Purpose of call");
+    const noteIdx = getIndex("Key Notes");
+    const durationIdx = getIndex("call_duration_minutes");
+    const bookedStatusIdx = getIndex("Booked"); // Changed from index 5
+    const scheduledDateIdx = getIndex("Time"); // Changed from index 4
+
+    console.log("Column indices:", {
+      nameIdx, phoneIdx, emailIdx, purposeIdx, noteIdx, durationIdx, bookedStatusIdx, scheduledDateIdx
+    });
+
     // Extract booked slots with full details
     const bookedSlots = rows
       .slice(1)
-      .filter(r => r[5] === "BOOKED" && r[4]) // booking_status + scheduled_datetime
+      .filter(r => {
+        const bookedStatus = r[bookedStatusIdx] ? r[bookedStatusIdx].trim().toLowerCase() : "";
+        const hasDate = r[scheduledDateIdx] && r[scheduledDateIdx].trim();
+        return (bookedStatus === "yes" || bookedStatus === "true" || bookedStatus === "booked") && hasDate;
+      })
       .map((r, i) => {
-        const nameIdx = getIndex("Name");
-        const phoneIdx = getIndex("Number");
-        const emailIdx = getIndex("Email");
-        const purposeIdx = getIndex("Purpose of call");
-        const noteIdx = getIndex("Key Notes");
-        const durationIdx = getIndex("call_duration_minutes");
-
         return {
           id: i,
-          start: r[4], // scheduled_datetime
-          end: r[4],
+          start: r[scheduledDateIdx], // scheduled_datetime
+          end: r[scheduledDateIdx],
           title: `${r[nameIdx] || "Client"} - ${r[purposeIdx] || "Appointment"}`,
           name: r[nameIdx] || "Unknown",
           phone: r[phoneIdx] || "",
@@ -53,9 +64,10 @@ module.exports = async function handler(req, res) {
         };
       });
 
+    console.log("✅ Booked Slots found:", bookedSlots.length);
     res.status(200).json(bookedSlots);
   } catch (err) {
-    console.error(err);
+    console.error("❌ Booked slots error:", err);
     res.status(500).json({ error: err.message });
   }
 };
