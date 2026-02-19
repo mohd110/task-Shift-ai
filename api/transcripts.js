@@ -28,16 +28,37 @@ try {
   const headers = rows[0];
   console.log("🔤 [API] Headers found:", headers);
 
+  // Improved column detection with better matching
   const getIndex = (name) => {
-    const index = headers.indexOf(name);
-    console.log(`  ➜ Column "${name}": ${index}`);
-    return index;
+    // Try exact match first
+    let index = headers.indexOf(name);
+    if (index >= 0) {
+      console.log(`  ✅ Column "${name}": ${index}`);
+      return index;
+    }
+    
+    // Try lowercase match
+    index = headers.findIndex(h => h.toLowerCase() === name.toLowerCase());
+    if (index >= 0) {
+      console.log(`  ✅ Column "${name}" (case-insensitive): ${index}`);
+      return index;
+    }
+    
+    // Try partial match
+    index = headers.findIndex(h => h.includes(name) || name.includes(h));
+    if (index >= 0) {
+      console.log(`  ⚠️ Column "${name}" (partial match): ${index}`);
+      return index;
+    }
+    
+    console.log(`  ❌ Column "${name}": NOT FOUND`);
+    return -1;
   };
 
 const data = rows.slice(1).map((row, i) => {
-  // Map all column indices
+  // Map all column indices with improved detection
   const indices = {
-    name: getIndex("Name") >= 0 ? getIndex("Name") : getIndex("caller_name"),
+    name: getIndex("Name"),
     phone: getIndex("Number") >= 0 ? getIndex("Number") : getIndex("caller_phone"),
     email: getIndex("Email") >= 0 ? getIndex("Email") : getIndex("caller_email"),
     purposeOfCall: getIndex("Purpose of call") >= 0 ? getIndex("Purpose of call") : getIndex("purpose_of_call"),
