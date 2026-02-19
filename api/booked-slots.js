@@ -20,10 +20,20 @@ module.exports = async function handler(req, res) {
     const headers = rows[0];
     console.log("📋 Headers:", headers);
     
-    // Helper to find column index
+    // Helper to find column index - more robust
     const getIndex = (name) => {
-      const index = headers.indexOf(name);
-      return index >= 0 ? index : headers.indexOf(name.toLowerCase());
+      // Try exact match first
+      let index = headers.indexOf(name);
+      if (index >= 0) return index;
+      
+      // Try lowercase match
+      index = headers.findIndex(h => h.toLowerCase() === name.toLowerCase());
+      if (index >= 0) return index;
+      
+      // Try partial match
+      index = headers.findIndex(h => h.includes(name) || name.includes(h));
+      console.warn(`⚠️ Column "${name}" not found exactly, using partial match at index ${index}`);
+      return index;
     };
 
     const nameIdx = getIndex("Name");
@@ -35,20 +45,22 @@ module.exports = async function handler(req, res) {
     const bookedStatusIdx = getIndex("Booked");
     const scheduledDateIdx = getIndex("Time");
 
-    console.log("Column indices:", {
+    console.log("✅ Column indices found:", {
       nameIdx, phoneIdx, emailIdx, purposeIdx, noteIdx, durationIdx, bookedStatusIdx, scheduledDateIdx
     });
-
-    // DEBUG: Return all rows with their data for debugging
-    const debugData = rows.slice(1).map((r, i) => ({
-      rowNum: i + 2,
-      name: r[nameIdx],
-      booked: r[bookedStatusIdx],
-      time: r[scheduledDateIdx],
-      allData: r
-    }));
     
-    console.log("📊 All rows:", debugData);
+    // Log first row with column values
+    if (rows.length > 1) {
+      const firstRow = rows[1];
+      console.log("📍 First row values:", {
+        name: firstRow[nameIdx],
+        phone: firstRow[phoneIdx],
+        email: firstRow[emailIdx],
+        purpose: firstRow[purposeIdx],
+        booked: firstRow[bookedStatusIdx],
+        time: firstRow[scheduledDateIdx]
+      });
+    }
 
     // Extract booked slots with full details
     const bookedSlots = rows
