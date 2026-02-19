@@ -388,6 +388,15 @@ events(fetchInfo, successCallback, failureCallback) {
   fetch("/api/booked-slots")
     .then(res => res.json())
     .then(data => {
+      console.log("📥 Raw API response:", data);
+      
+      // Ensure data is an array
+      if (!Array.isArray(data)) {
+        console.error("❌ API response is not an array:", data);
+        successCallback([]);
+        return;
+      }
+      
       bookedSlotsData = data; // Store for later reference
       const events = data.map(slot => ({
         id: slot.id,
@@ -407,7 +416,7 @@ events(fetchInfo, successCallback, failureCallback) {
           duration: slot.duration
         }
       }));
-      console.log("📅 Calendar events:", events);
+      console.log("📅 Calendar events:", events.length, "events loaded");
       successCallback(events);
     })
     .catch(err => {
@@ -434,6 +443,12 @@ calendar.render();
 }
 
 function displaySlotsForDate(dateStr) {
+  // Ensure bookedSlotsData is an array
+  if (!Array.isArray(bookedSlotsData)) {
+    console.warn("⚠️ bookedSlotsData is not an array:", bookedSlotsData);
+    bookedSlotsData = [];
+  }
+  
   // Find all slots for this date
   const slotsForDate = bookedSlotsData.filter(slot => {
     const slotDate = slot.start.split("T")[0]; // Get date part

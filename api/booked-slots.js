@@ -48,29 +48,35 @@ module.exports = async function handler(req, res) {
         return (bookedStatus === "yes" || bookedStatus === "true" || bookedStatus === "booked") && hasDate;
       })
       .map((r, i) => {
-        const startTime = r[scheduledDateIdx];
-        const durationMins = parseInt(r[durationIdx]) || 60;
-        
-        // Calculate end time
-        const startDate = new Date(startTime);
-        const endDate = new Date(startDate.getTime() + durationMins * 60000);
-        const endTime = endDate.toISOString();
+        try {
+          const startTime = r[scheduledDateIdx];
+          const durationMins = parseInt(r[durationIdx]) || 60;
+          
+          // Calculate end time
+          const startDate = new Date(startTime);
+          const endDate = new Date(startDate.getTime() + durationMins * 60000);
+          const endTime = endDate.toISOString();
 
-        return {
-          id: i,
-          start: startTime,
-          end: endTime,
-          title: `${r[nameIdx] || "Client"} - ${r[purposeIdx] || "Appointment"}`,
-          name: r[nameIdx] || "Unknown",
-          phone: r[phoneIdx] || "",
-          email: r[emailIdx] || "",
-          purpose: r[purposeIdx] || "",
-          notes: r[noteIdx] || "",
-          duration: r[durationIdx] || "60",
-          backgroundColor: "#fecaca",
-          borderColor: "#fca5a5"
-        };
-      });
+          return {
+            id: i,
+            start: startTime,
+            end: endTime,
+            title: `${r[nameIdx] || "Client"} - ${r[purposeIdx] || "Appointment"}`,
+            name: r[nameIdx] || "Unknown",
+            phone: r[phoneIdx] || "",
+            email: r[emailIdx] || "",
+            purpose: r[purposeIdx] || "",
+            notes: r[noteIdx] || "",
+            duration: r[durationIdx] || "60",
+            backgroundColor: "#fecaca",
+            borderColor: "#fca5a5"
+          };
+        } catch (mapErr) {
+          console.error("Error mapping slot:", mapErr, r);
+          return null;
+        }
+      })
+      .filter(slot => slot !== null);
 
     console.log("✅ Booked Slots found:", bookedSlots.length);
     res.status(200).json(bookedSlots);
