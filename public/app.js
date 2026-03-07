@@ -188,6 +188,9 @@ async function loadCalls() {
 
     console.log("🎯 First call sample:", data[0]);
 
+    // Sort calls by date descending (newest first)
+    data.sort((a, b) => new Date(b.datetime || b.appointmentTime || 0) - new Date(a.datetime || a.appointmentTime || 0));
+
     data.forEach((call, index) => {
       console.log(`📌 Processing call ${index + 1}:`, {
         name: call.name,
