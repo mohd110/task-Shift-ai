@@ -1,0 +1,42 @@
+<!-- pages/calllogs.html — Call Logs page -->
+<div style="margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+  <div>
+    <div style="font-size:22px;font-weight:700;font-family:var(--font-d)">Call Logs</div>
+    <div class="page-sub" style="font-size:13px;color:var(--gray-400);margin-top:4px">Loading…</div>
+  </div>
+  <div style="display:flex;gap:10px">
+    <button class="btn btn-outline btn-sm">⬇ Export</button>
+    <button class="btn btn-primary btn-sm" onclick="Sheet.refresh()">↻ Refresh</button>
+  </div>
+</div>
+
+<div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+  <div class="search-box" style="width:280px">
+    <span class="search-icon">🔍</span>
+    <input placeholder="Search by name or number…" oninput="CallLogs.setSearch(this.value)"/>
+  </div>
+  <button class="btn btn-outline btn-sm flt" style="border-color:var(--blue);color:var(--blue);background:var(--blue-light)"
+    onclick="CallLogs.setFilter('all',this)">All</button>
+  <button class="btn btn-outline btn-sm flt" onclick="CallLogs.setFilter('answered',this)">Answered</button>
+  <button class="btn btn-outline btn-sm flt" onclick="CallLogs.setFilter('booked',this)">Booked</button>
+  <button class="btn btn-outline btn-sm flt" onclick="CallLogs.setFilter('missed',this)">Missed</button>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>Caller</th><th>Number</th><th>Date & Time</th>
+          <th>Duration</th><th>Purpose</th><th>Status</th><th>Sentiment</th><th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="logs-body">
+        <tr><td colspan="9" style="text-align:center;padding:24px;color:var(--gray-400)">Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="display:flex;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--gray-100)">
+    <div style="font-size:13px;color:var(--gray-400);flex:1">Showing all records</div>
+  </div>
+</div>

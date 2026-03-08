@@ -1,0 +1,52 @@
+/* =====================================================
+   variables.css
+   All design tokens for the Task Shit Ai platform.
+   Change values here to retheme the entire app.
+   ===================================================== */
+
+:root {
+  /* ── Brand Colors ── */
+  --blue:         #2563EB;   /* Primary action color */
+  --blue-light:   #EFF6FF;   /* Light blue backgrounds */
+  --blue-mid:     #BFDBFE;   /* Mid blue for charts */
+  --blue-dark:    #1D4ED8;   /* Hover state */
+
+  /* ── Status Colors ── */
+  --green:        #10B981;   /* Success / booked */
+  --green-bg:     #ECFDF5;
+  --red:          #EF4444;   /* Error / missed */
+  --red-bg:       #FEF2F2;
+  --orange:       #F59E0B;   /* Warning / neutral */
+  --orange-bg:    #FFFBEB;
+
+  /* ── Grayscale ── */
+  --gray-50:      #F9FAFB;   /* Page background */
+  --gray-100:     #F3F4F6;   /* Subtle backgrounds */
+  --gray-200:     #E5E7EB;   /* Borders */
+  --gray-300:     #D1D5DB;
+  --gray-400:     #9CA3AF;   /* Placeholder / muted text */
+  --gray-500:     #6B7280;   /* Secondary text */
+  --gray-600:     #4B5563;
+  --gray-700:     #374151;
+  --gray-800:     #1F2937;   /* Body text */
+  --gray-900:     #111827;   /* Headings */
+  --white:        #FFFFFF;
+
+  /* ── Shadows ── */
+  --shadow-sm:    0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
+  --shadow:       0 4px 16px rgba(0,0,0,.08);
+  --shadow-lg:    0 10px 40px rgba(0,0,0,.12);
+
+  /* ── Border Radius ── */
+  --radius:       10px;
+  --radius-sm:    6px;
+  --radius-lg:    16px;
+
+  /* ── Typography ── */
+  --font:         'Plus Jakarta Sans', sans-serif;   /* Body font */
+  --font-d:       'Sora', sans-serif;                 /* Display / headings */
+
+  /* ── Layout ── */
+  --sidebar-w:    220px;
+  --topbar-h:     58px;
+}

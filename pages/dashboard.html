@@ -1,0 +1,145 @@
+<!-- =====================================================
+     pages/dashboard.html
+     Dashboard Overview page content.
+     Injected into #page-dashboard inside index.html.
+     ===================================================== -->
+
+<div style="margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
+  <div>
+    <div style="font-size:22px;font-weight:700;font-family:var(--font-d);color:var(--gray-900)">Dashboard Overview</div>
+    <div style="font-size:13px;color:var(--gray-400);margin-top:4px">Welcome back. Here's what's happening.</div>
+  </div>
+  <div style="display:flex;gap:10px">
+    <div class="tabs" style="margin-bottom:0">
+      <button class="tab active">Today</button>
+      <button class="tab">Week</button>
+      <button class="tab">Month</button>
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="Toast.show('Campaign feature coming soon')">+ New Campaign</button>
+  </div>
+</div>
+
+<!-- Stat Cards -->
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-icon blue">📞</div>
+    <div class="stat-label">Total Calls</div>
+    <div class="stat-val" id="stat-total">—</div>
+    <div class="stat-change">All time records</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon green">✓</div>
+    <div class="stat-label">Bookings</div>
+    <div class="stat-val" id="stat-booked">—</div>
+    <div class="stat-change up">Confirmed appointments</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon orange">⏱</div>
+    <div class="stat-label">Avg Duration</div>
+    <div class="stat-val" id="stat-dur">—</div>
+    <div class="stat-change">Per call</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon blue">📈</div>
+    <div class="stat-label">Conversion Rate</div>
+    <div class="stat-val" id="stat-rate">—</div>
+    <div class="stat-change up">Calls → Bookings</div>
+  </div>
+</div>
+
+<!-- Charts + outcomes row -->
+<div class="grid-3" style="margin-bottom:20px">
+
+  <!-- Line chart card -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Call Volume Trend</div>
+        <div class="card-sub">Last 30 days</div>
+      </div>
+      <div class="tabs" style="margin-bottom:0">
+        <button class="tab active" style="padding:5px 12px;font-size:12px">Daily</button>
+        <button class="tab" style="padding:5px 12px;font-size:12px">Weekly</button>
+      </div>
+    </div>
+    <!-- SVG line chart -->
+    <div style="position:relative;width:100%;height:180px">
+      <svg width="100%" height="100%" viewBox="0 0 600 180" preserveAspectRatio="none">
+        <line x1="0" y1="30"  x2="600" y2="30"  stroke="#F3F4F6" stroke-width="1"/>
+        <line x1="0" y1="80"  x2="600" y2="80"  stroke="#F3F4F6" stroke-width="1"/>
+        <line x1="0" y1="130" x2="600" y2="130" stroke="#F3F4F6" stroke-width="1"/>
+        <defs>
+          <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#2563EB" stop-opacity="0.15"/>
+            <stop offset="100%" stop-color="#2563EB" stop-opacity="0.01"/>
+          </linearGradient>
+        </defs>
+        <path d="M0,130 C40,110 80,90 120,100 C160,110 200,70 240,60 C280,50 320,80 360,65 C400,50 440,30 480,40 C520,50 560,45 600,35 L600,180 L0,180 Z" fill="url(#areaGrad)"/>
+        <path d="M0,130 C40,110 80,90 120,100 C160,110 200,70 240,60 C280,50 320,80 360,65 C400,50 440,30 480,40 C520,50 560,45 600,35" stroke="#2563EB" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="240" cy="60" r="4" fill="#2563EB"/>
+        <circle cx="480" cy="40" r="4" fill="#2563EB"/>
+        <circle cx="600" cy="35" r="4" fill="#2563EB"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Outcome bars + top hours -->
+  <div class="col-gap">
+    <div class="card">
+      <div class="card-title" style="margin-bottom:14px">Call Outcomes</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px">
+            <span style="color:var(--gray-600)">Answered</span>
+            <span style="font-weight:700;color:var(--green)" id="pct-answered">—</span>
+          </div>
+          <div class="progress">
+            <div class="progress-fill" id="prog-answered" style="width:0%;background:var(--green)"></div>
+          </div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px">
+            <span style="color:var(--gray-600)">Booked</span>
+            <span style="font-weight:700;color:var(--blue)" id="pct-booked">—</span>
+          </div>
+          <div class="progress">
+            <div class="progress-fill" id="prog-booked" style="width:0%"></div>
+          </div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px">
+            <span style="color:var(--gray-600)">Missed</span>
+            <span style="font-weight:700;color:var(--red)" id="pct-missed">—</span>
+          </div>
+          <div class="progress">
+            <div class="progress-fill" id="prog-missed" style="width:0%;background:var(--red)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recent calls table -->
+<div class="card">
+  <div class="card-header">
+    <div>
+      <div class="card-title">Recent Calls</div>
+      <div class="card-sub">Latest activity from your AI receptionist</div>
+    </div>
+    <button class="btn btn-outline btn-sm" onclick="switchPage('calllogs')">View All →</button>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Caller</th><th>Time</th><th>Duration</th>
+          <th>Purpose</th><th>Status</th><th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="dashboard-calls">
+        <tr><td colspan="6" style="text-align:center;padding:24px;color:var(--gray-400)">Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Task Shit Ai — Voice AI Platform</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- ── CSS ── load order matters ── -->
+  <link rel="stylesheet" href="css/variables.css"/>   <!-- Design tokens (colors, fonts, spacing) -->
+  <link rel="stylesheet" href="css/base.css"/>        <!-- Reset + body defaults -->
+  <link rel="stylesheet" href="css/auth.css"/>        <!-- Sign up, login, success screens -->
+  <link rel="stylesheet" href="css/layout.css"/>      <!-- Sidebar + topbar shell -->
+  <link rel="stylesheet" href="css/components.css"/>  <!-- Cards, tables, badges, tabs, etc. -->
+  <link rel="stylesheet" href="css/calendar.css"/>    <!-- Calendar grid + toast + modal -->
+
+  <!-- Early globals so onclick="goTo(...)" works before JS files finish loading -->
+  <script>
+    function goTo(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      var el = document.getElementById(id);
+      if (el) el.classList.add('active');
+      if (id === 'screen-app' && typeof App !== 'undefined') App.init();
+    }
+    function switchPage(name) {
+      if (typeof Nav !== 'undefined') Nav.switchPage(name);
+    }
+  </script>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN 1 — SIGN UP
+══════════════════════════════════════════════════════ -->
+<div class="screen active" id="screen-signup">
+  <!-- Content from: pages/signup.html -->
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="auth-logo-icon">T</div>
+        <div class="auth-logo-text">Task Shit Ai</div>
+      </div>
+      <div class="auth-title">Create your account</div>
+      <div class="auth-sub">Start your 14-day free trial. No credit card required.</div>
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input class="form-input" type="text" placeholder="John Doe"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" placeholder="john@company.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" placeholder="Min. 8 characters"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Company Name</label>
+        <input class="form-input" type="text" placeholder="Your company"/>
+      </div>
+      <button class="btn btn-primary btn-full" style="margin-bottom:16px" onclick="goTo('screen-success')">Create Account →</button>
+      <div class="auth-divider"><span>or continue with</span></div>
+      <button class="btn btn-outline btn-full" style="margin-bottom:16px">🔵 Continue with Google</button>
+      <div class="auth-footer">Already have an account? <a onclick="goTo('screen-login')">Sign in</a></div>
+    </div>
+    <div style="font-size:12px;color:var(--gray-400)">By signing up you agree to our <span style="color:var(--blue);cursor:pointer">Terms</span> and <span style="color:var(--blue);cursor:pointer">Privacy Policy</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN 2 — SUCCESSFUL SIGN UP
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-success">
+  <!-- Content from: pages/success.html -->
+  <div class="auth-wrap">
+    <div class="auth-card" style="text-align:center">
+      <div class="auth-logo" style="justify-content:center">
+        <div class="auth-logo-icon">T</div>
+        <div class="auth-logo-text">Task Shit Ai</div>
+      </div>
+      <div class="success-icon">✓</div>
+      <div class="auth-title">Welcome to Task Shit Ai!</div>
+      <div class="auth-sub">Your account has been created. You're ready to set up your AI voice assistant.</div>
+      <button class="btn btn-primary btn-full" style="margin-bottom:14px" onclick="goTo('screen-app')">Go to Dashboard →</button>
+      <button class="btn btn-outline btn-full" onclick="goTo('screen-login')">Sign in instead</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN 3 — LOGIN
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-login">
+  <!-- Content from: pages/login.html -->
+  <div class="auth-wrap">
+    <div class="login-panel">
+      <div style="text-align:center;color:#fff">
+        <div style="font-family:var(--font-d);font-size:32px;font-weight:700;margin-bottom:12px">Task Shit Ai</div>
+        <div style="font-size:15px;opacity:.8;line-height:1.6;max-width:320px">Your AI-powered voice receptionist. Never miss a call, never lose a lead.</div>
+      </div>
+      <svg width="100%" height="120" viewBox="0 0 400 120" fill="none" style="opacity:.2">
+        <path d="M0,60 C100,20 200,100 400,40" stroke="white" stroke-width="3" fill="none"/>
+        <path d="M0,80 C80,40 250,110 400,60" stroke="white" stroke-width="2" fill="none"/>
+        <circle cx="50" cy="55" r="4" fill="white"/>
+        <circle cx="200" cy="70" r="6" fill="white"/>
+        <circle cx="350" cy="48" r="4" fill="white"/>
+      </svg>
+      <div style="display:flex;gap:32px;color:#fff">
+        <div style="text-align:center"><div style="font-size:24px;font-weight:700">98%</div><div style="font-size:11px;opacity:.7">Uptime</div></div>
+        <div style="text-align:center"><div style="font-size:24px;font-weight:700">2.4s</div><div style="font-size:11px;opacity:.7">Avg Response</div></div>
+        <div style="text-align:center"><div style="font-size:24px;font-weight:700">10k+</div><div style="font-size:11px;opacity:.7">Calls/day</div></div>
+      </div>
+    </div>
+    <div class="login-form-side">
+      <div style="width:100%;max-width:380px;padding:40px">
+        <div class="auth-logo" style="margin-bottom:32px">
+          <div class="auth-logo-icon">T</div>
+          <div class="auth-logo-text">Task Shit Ai</div>
+        </div>
+        <div class="auth-title">Welcome back</div>
+        <div class="auth-sub">Sign in to your account to continue</div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" placeholder="you@company.com"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" type="password" placeholder="Your password"/>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--gray-600);cursor:pointer">
+            <input type="checkbox" style="accent-color:var(--blue)"/> Remember me
+          </label>
+          <span style="font-size:13px;color:var(--blue);cursor:pointer;font-weight:600">Forgot password?</span>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="goTo('screen-app')">Sign In →</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button class="btn btn-outline btn-full">🔵 Continue with Google</button>
+        <div class="auth-footer" style="margin-top:20px">Don't have an account? <a onclick="goTo('screen-signup')">Sign up free</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN 4 — APP SHELL (sidebar + all pages)
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-app">
+
+  <!-- ── SIDEBAR ── (css/layout.css) ── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">T</div>
+      <div class="sidebar-logo-name">Task Shit Ai</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-group">
+        <div class="nav-group-label">Main</div>
+        <div class="nav-link active" data-page="dashboard"><span class="nav-icon">⊞</span> Dashboard</div>
+        <div class="nav-link" data-page="analytics"><span class="nav-icon">↗</span> Analytics</div>
+        <div class="nav-link" data-page="calllogs"><span class="nav-icon">☎</span> Call Logs <span class="nav-badge" id="nav-badge">0</span></div>
+        <div class="nav-link" data-page="calendar"><span class="nav-icon">◫</span> Calendar</div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Account</div>
+        <div class="nav-link" data-page="settings"><span class="nav-icon">⚙</span> Settings</div>
+      </div>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="sidebar-user">
+        <div class="avatar">JD</div>
+        <div class="sidebar-user-info">
+          <div class="name">John Doe</div>
+          <div class="role">Admin</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN AREA ── -->
+  <div class="main">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="topbar-title" id="page-title">Dashboard Overview</div>
+      </div>
+      <div class="topbar-right">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input placeholder="Search calls, contacts…"/>
+        </div>
+        <button class="icon-btn">🔔<span class="notif-dot"></span></button>
+        <div class="avatar" style="cursor:pointer">JD</div>
+      </div>
+    </div>
+
+    <!-- ── PAGES ── each maps to pages/pagename.html ── -->
+
+    <!-- Dashboard — pages/dashboard.html -->
+    <div class="page-content active" id="page-dashboard">
+      <div style="margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
+        <div>
+          <div style="font-size:22px;font-weight:700;font-family:var(--font-d)">Dashboard Overview</div>
+          <div style="font-size:13px;color:var(--gray-400);margin-top:4px">Welcome back. Here's what's happening.</div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <div class="tabs" style="margin-bottom:0">
+            <button class="tab active">Today</button>
+            <button class="tab">Week</button>
+            <button class="tab">Month</button>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="Toast.show('Campaign feature coming soon')">+ New Campaign</button>
+        </div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-icon blue">📞</div><div class="stat-label">Total Calls</div><div class="stat-val" id="stat-total">—</div><div class="stat-change">All time</div></div>
+        <div class="stat-card"><div class="stat-icon green">✓</div><div class="stat-label">Bookings</div><div class="stat-val" id="stat-booked">—</div><div class="stat-change up">Confirmed</div></div>
+        <div class="stat-card"><div class="stat-icon orange">⏱</div><div class="stat-label">Avg Duration</div><div class="stat-val" id="stat-dur">—</div><div class="stat-change">Per call</div></div>
+        <div class="stat-card"><div class="stat-icon blue">📈</div><div class="stat-label">Conversion Rate</div><div class="stat-val" id="stat-rate">—</div><div class="stat-change up">Calls → Bookings</div></div>
+      </div>
+      <div class="grid-3" style="margin-bottom:20px">
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">Call Volume Trend</div><div class="card-sub">Last 30 days</div></div>
+            <div class="tabs" style="margin-bottom:0"><button class="tab active" style="padding:5px 12px;font-size:12px">Daily</button><button class="tab" style="padding:5px 12px;font-size:12px">Weekly</button></div>
+          </div>
+          <div style="position:relative;width:100%;height:180px">
+            <svg width="100%" height="100%" viewBox="0 0 600 180" preserveAspectRatio="none">
+              <line x1="0" y1="30" x2="600" y2="30" stroke="#F3F4F6" stroke-width="1"/>
+              <line x1="0" y1="80" x2="600" y2="80" stroke="#F3F4F6" stroke-width="1"/>
+              <line x1="0" y1="130" x2="600" y2="130" stroke="#F3F4F6" stroke-width="1"/>
+              <defs><linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2563EB" stop-opacity="0.15"/><stop offset="100%" stop-color="#2563EB" stop-opacity="0.01"/></linearGradient></defs>
+              <path d="M0,130 C40,110 80,90 120,100 C160,110 200,70 240,60 C280,50 320,80 360,65 C400,50 440,30 480,40 C520,50 560,45 600,35 L600,180 L0,180 Z" fill="url(#areaGrad)"/>
+              <path d="M0,130 C40,110 80,90 120,100 C160,110 200,70 240,60 C280,50 320,80 360,65 C400,50 440,30 480,40 C520,50 560,45 600,35" stroke="#2563EB" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <circle cx="480" cy="40" r="4" fill="#2563EB"/>
+            </svg>
+          </div>
+        </div>
+        <div class="col-gap">
+          <div class="card">
+            <div class="card-title" style="margin-bottom:14px">Call Outcomes</div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px"><span style="color:var(--gray-600)">Answered</span><span style="font-weight:700;color:var(--green)" id="pct-answered">—</span></div>
+                <div class="progress"><div class="progress-fill" id="prog-answered" style="width:0%;background:var(--green)"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px"><span style="color:var(--gray-600)">Booked</span><span style="font-weight:700;color:var(--blue)" id="pct-booked">—</span></div>
+                <div class="progress"><div class="progress-fill" id="prog-booked" style="width:0%"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px"><span style="color:var(--gray-600)">Missed</span><span style="font-weight:700;color:var(--red)" id="pct-missed">—</span></div>
+                <div class="progress"><div class="progress-fill" id="prog-missed" style="width:0%;background:var(--red)"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Recent Calls</div><div class="card-sub">Latest from your AI receptionist</div></div>
+          <button class="btn btn-outline btn-sm" onclick="switchPage('calllogs')">View All →</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Caller</th><th>Time</th><th>Duration</th><th>Purpose</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody id="dashboard-calls"><tr><td colspan="6" style="text-align:center;padding:24px;color:var(--gray-400)">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analytics — pages/analytics.html -->
+    <div class="page-content" id="page-analytics">
+      <div style="margin-bottom:24px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:22px;font-weight:700;font-family:var(--font-d);letter-spacing:-0.02em;color:#1e293b;">Advanced Performance Analytics</div>
+          <div style="font-size:13px;color:#94a3b8;margin-top:4px">Detailed insights into your AI voice agent performance</div>
+        </div>
+      </div>
+
+      <!-- Top Stats Row -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:24px">
+        <div class="card" style="padding:24px;border-radius:12px;">
+          <div style="font-size:11px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px">Answer Rate</div>
+          <div style="font-size:36px;font-weight:700;font-family:var(--font-d);color:#0f172a;line-height:1;margin-bottom:12px" id="a-answer-rate">24.8<span style="font-size:20px">%</span></div>
+          <div style="font-size:12px;font-weight:600;color:#10b981;">↑ 3.2% this week</div>
+        </div>
+        <div class="card" style="padding:24px;border-radius:12px;">
+          <div style="font-size:11px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px">Avg Duration</div>
+          <div style="font-size:36px;font-weight:700;font-family:var(--font-d);color:#0f172a;line-height:1;margin-bottom:12px" id="a-avg-dur">4<span style="font-size:20px">m</span> 52<span style="font-size:20px">s</span></div>
+          <div style="font-size:12px;font-weight:600;color:#ef4444;">↓ 0.4% this week</div>
+        </div>
+        <div class="card" style="padding:24px;border-radius:12px;">
+          <div style="font-size:11px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px">Cost per Call</div>
+          <div style="font-size:36px;font-weight:700;font-family:var(--font-d);color:#0f172a;line-height:1;margin-bottom:12px" id="a-cost">$12.46</div>
+          <div style="font-size:12px;font-weight:600;color:#10b981;">↓ 5.1% this week</div>
+        </div>
+        <div class="card" style="padding:24px;border-radius:12px;">
+          <div style="font-size:11px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px">Satisfaction</div>
+          <div style="font-size:36px;font-weight:700;font-family:var(--font-d);color:#0f172a;line-height:1;margin-bottom:12px" id="a-satisfaction">94<span style="font-size:20px">%</span></div>
+          <div style="font-size:12px;font-weight:600;color:#10b981;">↑ 1.8% this week</div>
+        </div>
+      </div>
+
+      <!-- Middle Row -->
+      <div class="grid-2" style="margin-bottom:24px;align-items:stretch">
+        <div class="card" style="border-radius:12px;padding:24px;display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px">
+            <div>
+              <div style="font-size:15px;font-weight:700;color:#0f172a;font-family:var(--font-d);margin-bottom:4px">Calls by Day</div>
+              <div style="font-size:12px;color:#94a3b8;">This week breakdown</div>
+            </div>
+            <div style="display:flex;background:#f1f5f9;border-radius:6px;padding:3px">
+              <div style="padding:4px 12px;font-size:11px;font-weight:600;color:#0f172a;background:#fff;border-radius:4px;box-shadow:0 1px 2px rgba(0,0,0,0.05)">Week</div>
+              <div style="padding:4px 12px;font-size:11px;font-weight:600;color:#64748b;cursor:pointer">Month</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;flex:1;min-height:160px;gap:12px" id="volume-bars">
+            <div style="color:var(--gray-400);font-size:13px">Loading…</div>
+          </div>
+        </div>
+
+        <div class="card" style="border-radius:12px;padding:24px;display:flex;flex-direction:column">
+          <div style="font-size:15px;font-weight:700;color:#0f172a;font-family:var(--font-d);margin-bottom:28px">Sentiment Analysis</div>
+          <div style="display:flex;flex-direction:column;gap:24px;flex:1" id="sentiment-bars">
+             <div style="color:var(--gray-400);font-size:13px">Loading…</div>
+          </div>
+          <div style="background:#f8fafc;border-radius:8px;padding:16px 20px;display:flex;gap:40px;margin-top:auto">
+            <div>
+              <div style="font-size:11px;color:#94a3b8;font-weight:500;margin-bottom:4px">Avg Score</div>
+              <div style="font-family:var(--font-d);font-weight:700;font-size:18px" id="sent-avg-score"><span style="color:#10b981">7.8</span><span style="color:#cbd5e1;font-size:14px">/10</span></div>
+            </div>
+            <div>
+              <div style="font-size:11px;color:#94a3b8;font-weight:500;margin-bottom:4px">CSAT</div>
+              <div style="font-family:var(--font-d);font-weight:700;font-size:18px" id="sent-csat"><span style="color:#3b82f6">4.6</span><span style="color:#cbd5e1;font-size:14px">/5</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Row -->
+      <div class="card" style="border-radius:12px;padding:24px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+          <div style="font-size:15px;font-weight:700;color:#0f172a;font-family:var(--font-d)">Top Call Intents</div>
+          <div style="font-size:12px;color:#94a3b8;">What callers are asking about</div>
+        </div>
+        <div class="table-wrap">
+          <table style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="border-bottom:1px solid #f8fafc">
+                <th style="padding:12px 16px;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;text-align:left;background:none;border:none">Intent</th>
+                <th style="padding:12px 16px;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;text-align:left;background:none;border:none">Count</th>
+                <th style="padding:12px 16px;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;text-align:left;background:none;border:none">% of Calls</th>
+                <th style="padding:12px 16px;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;text-align:left;background:none;border:none">Avg Duration</th>
+                <th style="padding:12px 16px;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;text-align:left;background:none;border:none">Conversion</th>
+              </tr>
+            </thead>
+            <tbody id="intent-tbody">
+              <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--gray-400)">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Call Logs — pages/calllogs.html -->
+    <div class="page-content" id="page-calllogs">
+      <div style="margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <div><div style="font-size:22px;font-weight:700;font-family:var(--font-d)">Call Logs</div><div class="page-sub" style="font-size:13px;color:var(--gray-400);margin-top:4px">Loading…</div></div>
+        <div style="display:flex;gap:10px"><button class="btn btn-outline btn-sm">⬇ Export</button><button class="btn btn-primary btn-sm" onclick="Sheet.refresh()">↻ Refresh</button></div>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+        <div class="search-box" style="width:280px"><span class="search-icon">🔍</span><input placeholder="Search by name or number…" oninput="CallLogs.setSearch(this.value)"/></div>
+        <button class="btn btn-outline btn-sm flt" style="border-color:var(--blue);color:var(--blue);background:var(--blue-light)" onclick="CallLogs.setFilter('all',this)">All</button>
+        <button class="btn btn-outline btn-sm flt" onclick="CallLogs.setFilter('answered',this)">Answered</button>
+        <button class="btn btn-outline btn-sm flt" onclick="CallLogs.setFilter('booked',this)">Booked</button>
+        <button class="btn btn-outline btn-sm flt" onclick="CallLogs.setFilter('missed',this)">Missed</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>Caller</th><th>Number</th><th>Date & Time</th><th>Duration</th><th>Purpose</th><th>Status</th><th>Sentiment</th><th>Action</th></tr></thead><tbody id="logs-body"><tr><td colspan="9" style="text-align:center;padding:24px;color:var(--gray-400)">Loading…</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- Detail — pages/detail.html -->
+    <div class="page-content" id="page-detail">
+      <div style="margin-bottom:20px;display:flex;align-items:center;gap:12px">
+        <button class="btn btn-outline btn-sm" onclick="switchPage('calllogs')">← Back</button>
+        <div style="font-size:22px;font-weight:700;font-family:var(--font-d)">Call Detail</div>
+      </div>
+      <div class="detail-grid">
+        <div class="col-gap">
+          <div class="card">
+            <div class="card-header">
+              <div style="display:flex;align-items:center;gap:12px"><div class="avatar" id="detail-avatar" style="width:44px;height:44px;font-size:16px">—</div><div><div id="detail-name" style="font-size:16px;font-weight:700">—</div><div id="detail-num" style="font-size:13px;color:var(--gray-400)">—</div></div></div>
+              <span id="detail-badge"><span class="badge badge-gray">—</span></span>
+            </div>
+            <div class="detail-row"><span class="detail-key">Date & Time</span><span class="detail-val" id="detail-datetime">—</span></div>
+            <div class="detail-row"><span class="detail-key">Duration</span><span class="detail-val" id="detail-dur">—</span></div>
+            <div class="detail-row"><span class="detail-key">Purpose</span><span class="detail-val" id="detail-purpose">—</span></div>
+            <div class="detail-row"><span class="detail-key">Appointment</span><span class="detail-val" id="detail-appt">—</span></div>
+            <div class="detail-row"><span class="detail-key">Email</span><span class="detail-val" id="detail-email">—</span></div>
+          </div>
+          <div class="card"><div class="card-title" style="margin-bottom:16px">Sentiment Score</div><div id="detail-sentiment"><div style="color:var(--gray-400);font-size:13px">Select a call to view sentiment</div></div></div>
+          <div class="card"><div class="card-title" style="margin-bottom:16px">Key Notes</div><div id="detail-notes" style="font-size:13px;color:var(--gray-600);line-height:1.7">—</div></div>
+        </div>
+        <div><div class="dark-card" style="min-height:400px"><div class="card-title" style="margin-bottom:20px;color:#fff">Full Transcript</div><div id="detail-transcript"><div style="color:rgba(255,255,255,.4);font-size:13px">Select a call to view its transcript</div></div></div></div>
+      </div>
+    </div>
+
+    <!-- Calendar — pages/calendar.html -->
+    <div class="page-content" id="page-calendar">
+      <div style="margin-bottom:20px;display:flex;align-items:center;justify-content:space-between"><div style="font-size:22px;font-weight:700;font-family:var(--font-d)">Calendar</div><button class="btn btn-primary btn-sm" onclick="ApptForm.open()">+ Add Appointment</button></div>
+      <div class="grid-3">
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div style="font-size:16px;font-weight:700;font-family:var(--font-d)" id="cal-label">…</div><div style="display:flex;gap:8px"><button class="cal-nav-btn" onclick="Cal.move(-1)">←</button><button class="cal-nav-btn" onclick="Cal.move(1)">→</button></div></div>
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+        <div class="col-gap"><div class="card"><div class="card-title" style="margin-bottom:16px">Upcoming Appointments</div><div id="upcoming-list"><div style="color:var(--gray-400);font-size:13px;padding:16px 0">Loading…</div></div></div></div>
+      </div>
+    </div>
+
+    <!-- Settings — pages/settings.html -->
+    <div class="page-content" id="page-settings">
+      <div style="margin-bottom:24px"><div style="font-size:22px;font-weight:700;font-family:var(--font-d)">Settings</div><div style="font-size:13px;color:var(--gray-400);margin-top:4px">Manage your account and AI agent preferences</div></div>
+      <div class="grid-2">
+        <div class="col-gap">
+          <div class="card">
+            <div class="card-title" style="margin-bottom:20px">Profile</div>
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px"><div class="avatar" style="width:52px;height:52px;font-size:18px">JD</div><div><div style="font-size:15px;font-weight:700">John Doe</div><div style="font-size:13px;color:var(--gray-400)">john@lumiereaesthetics.com</div></div><button class="btn btn-outline btn-sm" style="margin-left:auto">Edit</button></div>
+            <div class="form-group"><label class="form-label">Business Name</label><input class="form-input" value="Lumière Aesthetics"/></div>
+            <div class="form-group"><label class="form-label">Phone Number</label><input class="form-input" value="+91 98765 43210"/></div>
+            <div class="form-group" style="margin-bottom:0"><label class="form-label">Timezone</label><select class="form-input"><option>Asia/Kolkata (IST)</option><option>America/New_York</option></select></div>
+          </div>
+          <div class="card">
+            <div class="card-title" style="margin-bottom:20px">AI Agent Config</div>
+            <div class="form-group"><label class="form-label">Agent Name</label><input class="form-input" value="Sarah"/></div>
+            <div class="form-group"><label class="form-label">Voice</label><select class="form-input"><option>Female – Natural (Recommended)</option><option>Male – Natural</option></select></div>
+            <div class="form-group" style="margin-bottom:0"><label class="form-label">Language</label><select class="form-input"><option>English (Indian)</option><option>Hindi</option></select></div>
+          </div>
+        </div>
+        <div class="col-gap">
+          <div class="card">
+            <div class="card-title" style="margin-bottom:20px">Notifications</div>
+            <div class="settings-list">
+              <div class="settings-item"><div><div class="settings-label">New Booking Alert</div><div class="settings-desc">Get notified when a call converts to booking</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+              <div class="settings-item"><div><div class="settings-label">Missed Call Alert</div><div class="settings-desc">Alert when AI can't handle a call</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+              <div class="settings-item"><div><div class="settings-label">Daily Summary</div><div class="settings-desc">Daily digest of call performance</div></div><button class="toggle" onclick="this.classList.toggle('on')"></button></div>
+              <div class="settings-item"><div><div class="settings-label">SMS Confirmation</div><div class="settings-desc">Auto-send SMS after booking</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title" style="margin-bottom:20px">Integrations</div>
+            <div class="settings-list">
+              <div class="settings-item"><div style="display:flex;align-items:center;gap:10px"><div style="width:32px;height:32px;background:#4285F4;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff">G</div><div><div class="settings-label">Google Calendar</div><div class="settings-desc">Sync appointments</div></div></div><span class="badge badge-green">Connected</span></div>
+              <div class="settings-item"><div style="display:flex;align-items:center;gap:10px"><div style="width:32px;height:32px;background:#0F9D58;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff">S</div><div><div class="settings-label">Google Sheets</div><div class="settings-desc">Auto-log all calls</div></div></div><span class="badge badge-green">Connected</span></div>
+              <div class="settings-item"><div style="display:flex;align-items:center;gap:10px"><div style="width:32px;height:32px;background:#CF4E18;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px">T</div><div><div class="settings-label">Twilio SMS</div><div class="settings-desc">Booking confirmations</div></div></div><span class="badge badge-green">Connected</span></div>
+              <div class="settings-item"><div style="display:flex;align-items:center;gap:10px"><div style="width:32px;height:32px;background:#FF6640;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px">n8</div><div><div class="settings-label">n8n Workflows</div><div class="settings-desc">Automation backend</div></div></div><span class="badge badge-green">Connected</span></div>
+            </div>
+          </div>
+          <div class="card" style="border-color:#FECACA">
+            <div class="card-title" style="margin-bottom:16px;color:var(--red)">Danger Zone</div>
+            <div style="font-size:13px;color:var(--gray-500);margin-bottom:14px">These actions are irreversible.</div>
+            <div style="display:flex;gap:10px"><button class="btn btn-danger btn-sm">Reset AI Agent</button><button class="btn btn-danger btn-sm">Delete Account</button></div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:16px;display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="Toast.show('Settings saved ✓')">Save Changes</button></div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /screen-app -->
+
+<!-- Add Appointment Modal -->
+<div class="modal-bg" id="modal-add-appt">
+  <div class="modal-box">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px">
+      <div>
+        <div class="modal-title">New Appointment</div>
+        <div class="modal-sub" style="margin-bottom:0">Manually schedule a new caller</div>
+      </div>
+      <button class="icon-btn" onclick="ApptForm.close()" style="color:var(--gray-400);background:none;border:none;font-size:18px;cursor:pointer">✕</button>
+    </div>
+    <form id="form-add-appt" onsubmit="ApptForm.submit(event)">
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        <input class="form-input" id="appt-name" required placeholder="e.g. Jane Smith"/>
+      </div>
+      <div class="grid-2">
+        <div class="col-gap">
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input class="form-input" id="appt-phone" required placeholder="+1 234 567 8900"/>
+          </div>
+        </div>
+        <div class="col-gap">
+          <div class="form-group">
+            <label class="form-label">Email <span style="color:var(--gray-400);font-weight:normal">(Optional)</span></label>
+            <input class="form-input" type="email" id="appt-email" placeholder="jane@example.com"/>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Purpose of Call</label>
+        <input class="form-input" id="appt-purpose" required placeholder="e.g. Monthly maintenance setup"/>
+      </div>
+      <div class="grid-2">
+        <div class="col-gap">
+          <div class="form-group">
+            <label class="form-label">Date</label>
+            <input class="form-input" type="date" id="appt-date" required/>
+          </div>
+        </div>
+        <div class="col-gap">
+          <div class="form-group">
+            <label class="form-label">Time</label>
+            <input class="form-input" type="time" id="appt-time" required/>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:32px">
+        <button type="button" class="btn btn-outline" onclick="ApptForm.close()">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="btn-save-appt">Save Appointment</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Global toast notification -->
+<div class="toast" id="toast"></div>
+
+<!-- ── JAVASCRIPT ── load order matters ── -->
+<script src="js/config.js"></script>            <!-- App config (Sheet ID, API key, page titles) -->
+<script src="js/components/toast.js"></script>  <!-- Toast notification system -->
+<script src="js/components/helpers.js"></script><!-- Shared utility functions -->
+<script src="js/data/sheet.js"></script>        <!-- Google Sheets data layer -->
+<script src="js/pages/apptForm.js"></script>    <!-- Add Appointment logic -->
+<script src="js/pages/dashboard.js"></script>   <!-- Dashboard page logic -->
+<script src="js/pages/calllogs.js"></script>    <!-- Call Logs page logic -->
+<script src="js/pages/detail.js"></script>      <!-- Detail Call Log page logic -->
+<script src="js/pages/analytics.js"></script>   <!-- Analytics page logic -->
+<script src="js/pages/calendar.js"></script>    <!-- Calendar page logic -->
+<script src="js/components/navigation.js"></script> <!-- Page routing + nav binding -->
+<script src="js/app.js"></script>               <!-- Entry point — boots the app -->
+
+</body>
+</html>

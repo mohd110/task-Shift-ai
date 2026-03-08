@@ -1,0 +1,58 @@
+/* =====================================================
+   base.css
+   CSS reset, body defaults, and global layout rules.
+   ===================================================== */
+
+/* ── Reset ── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ── Body ── */
+body {
+  font-family: var(--font);
+  background: var(--gray-50);
+  color: var(--gray-800);
+  min-height: 100vh;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Element defaults ── */
+button    { font-family: var(--font); cursor: pointer; }
+input,
+textarea,
+select    { font-family: var(--font); }
+a         { text-decoration: none; color: inherit; }
+
+/* ── Screen show/hide system ──
+   All top-level screens are hidden by default.
+   JS adds .active to show the current screen.   */
+.screen        { display: none; }
+.screen.active { display: flex; }
+
+/* ── Page content panels ──
+   App pages inside the dashboard shell.          */
+.page-content        { display: none; padding: 28px; flex: 1; }
+.page-content.active {
+  display: block;
+  animation: fadeUp 0.3s ease;
+}
+
+/* ── Fade-up entrance animation ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive breakpoint ── */
+@media (max-width: 1024px) {
+  .stats-row,
+  .grid-2,
+  .grid-3,
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}

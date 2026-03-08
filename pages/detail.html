@@ -1,0 +1,54 @@
+<!-- pages/detail.html — Detail Call Log page -->
+<div style="margin-bottom:20px;display:flex;align-items:center;gap:12px">
+  <button class="btn btn-outline btn-sm" onclick="switchPage('calllogs')">← Back</button>
+  <div style="font-size:22px;font-weight:700;font-family:var(--font-d)">Call Detail</div>
+</div>
+
+<div class="detail-grid">
+  <!-- Left: call info cards -->
+  <div class="col-gap">
+
+    <!-- Header card -->
+    <div class="card">
+      <div class="card-header">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="avatar" id="detail-avatar" style="width:44px;height:44px;font-size:16px">—</div>
+          <div>
+            <div id="detail-name"  style="font-size:16px;font-weight:700">—</div>
+            <div id="detail-num"   style="font-size:13px;color:var(--gray-400)">—</div>
+          </div>
+        </div>
+        <span id="detail-badge"><span class="badge badge-gray">—</span></span>
+      </div>
+      <div class="detail-row"><span class="detail-key">Date & Time</span><span class="detail-val" id="detail-datetime">—</span></div>
+      <div class="detail-row"><span class="detail-key">Duration</span><span class="detail-val" id="detail-dur">—</span></div>
+      <div class="detail-row"><span class="detail-key">Purpose</span><span class="detail-val" id="detail-purpose">—</span></div>
+      <div class="detail-row"><span class="detail-key">Appointment</span><span class="detail-val" id="detail-appt">—</span></div>
+      <div class="detail-row"><span class="detail-key">Email</span><span class="detail-val" id="detail-email">—</span></div>
+    </div>
+
+    <!-- Sentiment card -->
+    <div class="card">
+      <div class="card-title" style="margin-bottom:16px">Sentiment Score</div>
+      <div id="detail-sentiment">
+        <div style="color:var(--gray-400);font-size:13px">Select a call to view sentiment</div>
+      </div>
+    </div>
+
+    <!-- Notes card -->
+    <div class="card">
+      <div class="card-title" style="margin-bottom:16px">Key Notes</div>
+      <div id="detail-notes" style="font-size:13px;color:var(--gray-600);line-height:1.7">—</div>
+    </div>
+  </div>
+
+  <!-- Right: transcript -->
+  <div>
+    <div class="dark-card" style="height:100%;min-height:400px">
+      <div class="card-title" style="margin-bottom:20px;color:#fff">Full Transcript</div>
+      <div id="detail-transcript">
+        <div style="color:rgba(255,255,255,.4);font-size:13px">Select a call to view its transcript</div>
+      </div>
+    </div>
+  </div>
+</div>

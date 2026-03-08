@@ -1,0 +1,74 @@
+<!-- =====================================================
+     pages/login.html
+     Login screen — split layout:
+     Left: blue hero panel  |  Right: login form
+     ===================================================== -->
+
+<!-- Blue hero panel -->
+<div class="login-panel">
+  <div style="text-align:center;color:#fff">
+    <div style="font-family:var(--font-d);font-size:32px;font-weight:700;margin-bottom:12px">Task Shit Ai</div>
+    <div style="font-size:15px;opacity:.8;line-height:1.6;max-width:320px">
+      Your AI-powered voice receptionist. Never miss a call, never lose a lead.
+    </div>
+  </div>
+  <!-- Decorative wave SVG -->
+  <svg width="100%" height="120" viewBox="0 0 400 120" fill="none" style="opacity:.2">
+    <path d="M0,60 C100,20 200,100 400,40" stroke="white" stroke-width="3" fill="none"/>
+    <path d="M0,80 C80,40 250,110 400,60" stroke="white" stroke-width="2" fill="none"/>
+    <circle cx="50" cy="55" r="4" fill="white"/>
+    <circle cx="200" cy="70" r="6" fill="white"/>
+    <circle cx="350" cy="48" r="4" fill="white"/>
+  </svg>
+  <!-- Stats row -->
+  <div style="display:flex;gap:32px;color:#fff">
+    <div style="text-align:center">
+      <div style="font-size:24px;font-weight:700">98%</div>
+      <div style="font-size:11px;opacity:.7">Uptime</div>
+    </div>
+    <div style="text-align:center">
+      <div style="font-size:24px;font-weight:700">2.4s</div>
+      <div style="font-size:11px;opacity:.7">Avg Response</div>
+    </div>
+    <div style="text-align:center">
+      <div style="font-size:24px;font-weight:700">10k+</div>
+      <div style="font-size:11px;opacity:.7">Calls/day</div>
+    </div>
+  </div>
+</div>
+
+<!-- Login form -->
+<div class="login-form-side">
+  <div style="width:100%;max-width:380px;padding:40px">
+    <div class="auth-logo" style="margin-bottom:32px">
+      <div class="auth-logo-icon">T</div>
+      <div class="auth-logo-text">Task Shit Ai</div>
+    </div>
+    <div class="auth-title">Welcome back</div>
+    <div class="auth-sub">Sign in to your account to continue</div>
+
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input class="form-input" type="email" placeholder="you@company.com"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" type="password" placeholder="Your password"/>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--gray-600);cursor:pointer">
+        <input type="checkbox" style="accent-color:var(--blue)"/> Remember me
+      </label>
+      <span style="font-size:13px;color:var(--blue);cursor:pointer;font-weight:600">Forgot password?</span>
+    </div>
+
+    <button class="btn btn-primary btn-full" onclick="goTo('screen-app')">Sign In →</button>
+    <div class="auth-divider"><span>or</span></div>
+    <button class="btn btn-outline btn-full">🔵 Continue with Google</button>
+
+    <div class="auth-footer" style="margin-top:20px">
+      Don't have an account? <a onclick="goTo('screen-signup')">Sign up free</a>
+    </div>
+  </div>
+</div>

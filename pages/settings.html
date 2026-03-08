@@ -1,0 +1,137 @@
+<!-- pages/settings.html — Settings page -->
+<div style="margin-bottom:24px">
+  <div style="font-size:22px;font-weight:700;font-family:var(--font-d)">Settings</div>
+  <div style="font-size:13px;color:var(--gray-400);margin-top:4px">Manage your account and AI agent preferences</div>
+</div>
+
+<div class="grid-2">
+  <div class="col-gap">
+    <!-- Profile -->
+    <div class="card">
+      <div class="card-title" style="margin-bottom:20px">Profile</div>
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+        <div class="avatar" style="width:52px;height:52px;font-size:18px">JD</div>
+        <div>
+          <div style="font-size:15px;font-weight:700">John Doe</div>
+          <div style="font-size:13px;color:var(--gray-400)">john@lumiereaesthetics.com</div>
+        </div>
+        <button class="btn btn-outline btn-sm" style="margin-left:auto">Edit</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Business Name</label>
+        <input class="form-input" value="Lumière Aesthetics"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number</label>
+        <input class="form-input" value="+91 98765 43210"/>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Timezone</label>
+        <select class="form-input">
+          <option>Asia/Kolkata (IST)</option>
+          <option>America/New_York</option>
+          <option>Europe/London</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- AI Agent -->
+    <div class="card">
+      <div class="card-title" style="margin-bottom:20px">AI Agent Config</div>
+      <div class="form-group">
+        <label class="form-label">Agent Name</label>
+        <input class="form-input" value="Sarah"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Voice</label>
+        <select class="form-input">
+          <option>Female – Natural (Recommended)</option>
+          <option>Female – Professional</option>
+          <option>Male – Natural</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Language</label>
+        <select class="form-input">
+          <option>English (Indian)</option>
+          <option>English (US)</option>
+          <option>Hindi</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-gap">
+    <!-- Notifications -->
+    <div class="card">
+      <div class="card-title" style="margin-bottom:20px">Notifications</div>
+      <div class="settings-list">
+        <div class="settings-item">
+          <div><div class="settings-label">New Booking Alert</div><div class="settings-desc">Get notified when a call converts to booking</div></div>
+          <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <div class="settings-item">
+          <div><div class="settings-label">Missed Call Alert</div><div class="settings-desc">Alert when AI can't handle a call</div></div>
+          <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <div class="settings-item">
+          <div><div class="settings-label">Daily Summary</div><div class="settings-desc">Daily digest of call performance</div></div>
+          <button class="toggle" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <div class="settings-item">
+          <div><div class="settings-label">SMS Confirmation</div><div class="settings-desc">Auto-send SMS after booking</div></div>
+          <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Integrations -->
+    <div class="card">
+      <div class="card-title" style="margin-bottom:20px">Integrations</div>
+      <div class="settings-list">
+        <div class="settings-item">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:32px;height:32px;background:#4285F4;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px">G</div>
+            <div><div class="settings-label">Google Calendar</div><div class="settings-desc">Sync appointments automatically</div></div>
+          </div>
+          <span class="badge badge-green">Connected</span>
+        </div>
+        <div class="settings-item">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:32px;height:32px;background:#0F9D58;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px">S</div>
+            <div><div class="settings-label">Google Sheets</div><div class="settings-desc">Auto-log all call data</div></div>
+          </div>
+          <span class="badge badge-green">Connected</span>
+        </div>
+        <div class="settings-item">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:32px;height:32px;background:#CF4E18;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px">T</div>
+            <div><div class="settings-label">Twilio SMS</div><div class="settings-desc">Send booking confirmations</div></div>
+          </div>
+          <span class="badge badge-green">Connected</span>
+        </div>
+        <div class="settings-item">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:32px;height:32px;background:#FF6640;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px">n8</div>
+            <div><div class="settings-label">n8n Workflows</div><div class="settings-desc">Automation backend</div></div>
+          </div>
+          <span class="badge badge-green">Connected</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Danger zone -->
+    <div class="card" style="border-color:#FECACA">
+      <div class="card-title" style="margin-bottom:16px;color:var(--red)">Danger Zone</div>
+      <div style="font-size:13px;color:var(--gray-500);margin-bottom:14px">These actions are irreversible. Please be sure.</div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-danger btn-sm">Reset AI Agent</button>
+        <button class="btn btn-danger btn-sm">Delete Account</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:16px;display:flex;justify-content:flex-end">
+  <button class="btn btn-primary" onclick="Toast.show('Settings saved successfully ✓')">Save Changes</button>
+</div>

@@ -1,0 +1,233 @@
+/* =====================================================
+   auth.css
+   Styles for: Sign Up, Successful Sign Up, Login.
+   All three use .auth-wrap as their outer container.
+   ===================================================== */
+
+/* ── Outer wrapper — full screen centered ── */
+.auth-wrap {
+  min-height: 100vh;
+  width: 100%;
+  background: var(--gray-50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── Auth card — white floating panel ── */
+.auth-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+}
+
+/* ── Logo row inside card ── */
+.auth-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.auth-logo-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--blue);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: var(--font-d);
+}
+
+.auth-logo-text {
+  font-family: var(--font-d);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+/* ── Card headings ── */
+.auth-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 6px;
+  font-family: var(--font-d);
+}
+
+.auth-sub {
+  font-size: 13px;
+  color: var(--gray-500);
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+/* ── Form fields ── */
+.form-group  { margin-bottom: 18px; }
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-bottom: 6px;
+  letter-spacing: 0.03em;
+}
+
+.form-input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--gray-800);
+  background: var(--white);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-input::placeholder { color: var(--gray-400); }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: all 0.2s;
+  font-family: var(--font);
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--blue);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--blue-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.btn-full    { width: 100%; }
+.btn-sm      { padding: 7px 14px; font-size: 12px; }
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--gray-200);
+  color: var(--gray-700);
+}
+
+.btn-outline:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.btn-danger {
+  background: var(--red-bg);
+  color: var(--red);
+  border: 1px solid #FECACA;
+}
+
+.btn-danger:hover {
+  background: var(--red);
+  color: #fff;
+}
+
+/* ── Divider with "or" label ── */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gray-200);
+}
+
+.auth-divider span {
+  font-size: 12px;
+  color: var(--gray-400);
+}
+
+/* ── Footer link line ── */
+.auth-footer {
+  font-size: 13px;
+  color: var(--gray-500);
+  text-align: center;
+}
+
+.auth-footer a {
+  color: var(--blue);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-footer a:hover { color: var(--blue-dark); }
+
+/* ── Success screen: green checkmark circle ── */
+.success-icon {
+  width: 64px;
+  height: 64px;
+  background: var(--green-bg);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 20px;
+  color: var(--green);
+}
+
+/* ── Login: blue hero panel (left half) ── */
+.login-panel {
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  width: 45%;
+  background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 50%, #7C3AED 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 24px;
+  padding: 40px;
+  z-index: 0;
+}
+
+/* ── Login: right form half ── */
+.login-form-side {
+  position: relative;
+  z-index: 1;
+  margin-left: 45%;
+  width: 55%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}

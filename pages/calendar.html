@@ -1,0 +1,29 @@
+<!-- pages/calendar.html — Calendar page -->
+<div style="margin-bottom:20px;display:flex;align-items:center;justify-content:space-between">
+  <div style="font-size:22px;font-weight:700;font-family:var(--font-d)">Calendar</div>
+  <button class="btn btn-primary btn-sm" onclick="Toast.show('Add appointment coming soon')">+ Add Appointment</button>
+</div>
+
+<div class="grid-3">
+  <!-- Monthly grid -->
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="font-size:16px;font-weight:700;font-family:var(--font-d)" id="cal-label">…</div>
+      <div style="display:flex;gap:8px">
+        <button class="cal-nav-btn" onclick="Cal.move(-1)">←</button>
+        <button class="cal-nav-btn" onclick="Cal.move(1)">→</button>
+      </div>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </div>
+
+  <!-- Upcoming appointments -->
+  <div class="col-gap">
+    <div class="card">
+      <div class="card-title" style="margin-bottom:16px">Upcoming Appointments</div>
+      <div id="upcoming-list">
+        <div style="color:var(--gray-400);font-size:13px;padding:16px 0">Loading…</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<!-- pages/analytics.html — Analytics page -->
+<div style="margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+  <div>
+    <div style="font-size:22px;font-weight:700;font-family:var(--font-d)">Advanced Performance Analytics</div>
+    <div style="font-size:13px;color:var(--gray-400);margin-top:4px">Detailed insights into your AI voice agent</div>
+  </div>
+  <button class="btn btn-outline btn-sm" onclick="Sheet.refresh()">↻ Refresh</button>
+</div>
+
+<!-- Big metrics row -->
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px">
+  <div class="card" style="padding:20px">
+    <div style="font-size:11px;color:var(--gray-500);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Conversion Rate</div>
+    <div style="font-size:36px;font-weight:700;font-family:var(--font-d)" id="a-answer-rate">—</div>
+  </div>
+  <div class="card" style="padding:20px">
+    <div style="font-size:11px;color:var(--gray-500);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Total Calls</div>
+    <div style="font-size:36px;font-weight:700;font-family:var(--font-d)" id="a-total">—</div>
+  </div>
+  <div class="card" style="padding:20px">
+    <div style="font-size:11px;color:var(--gray-500);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Booked</div>
+    <div style="font-size:36px;font-weight:700;font-family:var(--font-d);color:var(--green)" id="a-booked">—</div>
+  </div>
+  <div class="card" style="padding:20px">
+    <div style="font-size:11px;color:var(--gray-500);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Not Booked</div>
+    <div style="font-size:36px;font-weight:700;font-family:var(--font-d);color:var(--red)" id="a-not-booked">—</div>
+  </div>
+</div>
+
+<!-- Intent breakdown table & Sentiment/Volume -->
+<div class="grid-2">
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Top Call Intents</div>
+        <div class="card-sub">What callers are asking about</div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Intent</th><th>Count</th><th>% of Calls</th><th>Conversion</th></tr>
+        </thead>
+        <tbody id="intent-tbody">
+          <tr><td colspan="4" style="text-align:center;padding:20px;color:var(--gray-400)">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="col-gap">
+    <!-- Call Volume Bar Graph Custom CSS via Inline Styles -->
+    <div class="card">
+      <div class="card-title" style="margin-bottom:16px">Call Volume (Last 7 Days)</div>
+      <div style="display:flex;align-items:flex-end;gap:8px;height:140px;padding-top:20px" id="volume-bars">
+        <div style="color:var(--gray-400);font-size:13px">Loading…</div>
+      </div>
+    </div>
+    <!-- Sentiment Analysis Breakdown -->
+    <div class="card">
+      <div class="card-title" style="margin-bottom:16px">Overall Sentiment Analysis</div>
+      <div style="display:flex;flex-direction:column;gap:12px" id="sentiment-bars">
+        <div style="color:var(--gray-400);font-size:13px">Loading…</div>
+      </div>
+    </div>
+  </div>
+</div>
