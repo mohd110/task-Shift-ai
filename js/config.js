@@ -1,6 +1,6 @@
 /* =====================================================
    js/config.js
-   Central configuration for the Task Shit Ai app.
+  Central configuration for the Task Shift Ai app.
    Update SHEET_ID and API_KEY here — nowhere else.
    ===================================================== */
 

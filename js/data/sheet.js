@@ -52,7 +52,7 @@ const Sheet = (() => {
       ended     : findCol(headers, 'Call ended', 'Call Ended', 'call_ended'),
       transcript: findCol(headers, 'Transcript', 'transcript'),
     };
-    console.log('📋 Task Shit Ai — column map:', _cols);
+    console.log('📋 Task Shift Ai — column map:', _cols);
   }
 
   /* ──────────────────────────────────────────

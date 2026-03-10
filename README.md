@@ -1,4 +1,4 @@
-# Task Shit Ai — Voice AI Dashboard
+# Task Shift Ai — Voice AI Dashboard
 
 A clean, structured frontend for your VAPI voice agent + n8n automation.
 Pulls live data from your Google Sheet automatically.
@@ -6,7 +6,7 @@ Pulls live data from your Google Sheet automatically.
 ## Project Structure
 
 ```
-task-shit-ai/
+task-shift-ai/
 │
 ├── index.html                  ← Entry point — open this in your browser
 │
