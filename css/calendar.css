@@ -159,3 +159,20 @@
   color: var(--gray-500);
   margin-bottom: 24px;
 }
+
+/* ── Mobile responsive ── */
+@media (max-width: 768px) {
+  .cal-grid {
+    gap: 2px;
+  }
+
+  .cal-cell {
+    font-size: 12px;
+    min-height: 40px;
+  }
+
+  .cal-dn {
+    font-size: 10px;
+    padding: 4px 0;
+  }
+}

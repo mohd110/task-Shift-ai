@@ -45,6 +45,33 @@ const Nav = (() => {
         });
       });
     });
+
+    // Bind hamburger menu for mobile
+    const hamburger = document.getElementById('hamburger-btn');
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    if (hamburger && sidebar && overlay) {
+      hamburger.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+      });
+
+      overlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+      });
+
+      // Close sidebar when clicking a nav link on mobile
+      document.querySelectorAll('.nav-link[data-page]').forEach(link => {
+        link.addEventListener('click', () => {
+          if (window.innerWidth <= 768) {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+          }
+        });
+      });
+    }
   }
 
   return { init, switchPage, goTo };
